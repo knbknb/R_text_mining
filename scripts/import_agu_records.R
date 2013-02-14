@@ -1,6 +1,7 @@
 # TODO: Add comment
 # $Id: import_agu_records.R 3357 2013-02-14 15:37:13Z knb $
 # Author: knb
+# Build a corpus from AGU FALL MEETING 2012 abstracts
 ###############################################################################
 #library("Hmisc")
 
