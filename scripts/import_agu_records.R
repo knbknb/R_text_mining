@@ -11,7 +11,7 @@ homedir="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/"
 urlprefix="http://fallmeeting.agu.org/2012/eposters/eposter/"
 wekajar="/usr/local/lib/R/site-library/RWekajars/java/weka.jar"
 verbose = TRUE
-show_n = 3  #show n items
+select_n = 3  #show n items
 outdir2="data/abstracts-agu/informatics"
 wd=getwd()
 ####
@@ -67,7 +67,7 @@ corpus <- corpus[grep("\\S+", corpus, invert=FALSE, perl=TRUE)]
 if (verbose == TRUE){
 	cnt = length(corpus)
 } else {
-  cnt = show_n
+  cnt = select_n
 }
 for (i in seq(from= 1, to=cnt, by=1)){
     print(paste(i, " ", substr(corpus[[i]], 1, 140), sep = " "))
@@ -82,7 +82,7 @@ for (i in seq(from= 1, to=cnt, by=1)){
 		
 }
 
-cnt=show_n
+cnt=select_n
 meta(corpus[[cnt]])
 #save.image("/home/knb/code/svn/eclipse38_dynlang/R_one-offs/text_mining/01-corpus-metadata.RData")
 
@@ -118,9 +118,9 @@ tm::inspect(head(corpus, n=cnt))
 
 fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
 
-system(paste0("mkdir -p ", wd, "/", outdir2))
-outdir=paste0(wd, "/", outdir2)
-outdir
+system(paste0("mkdir -p ", homedir, "/", outdir2))
+outdir=paste0(homedir, "/", outdir2)
+paste("outdir = ", outdir)
 #writeCorpus(corpus, outdir, filenames=fn )
 
 # do not use when stopwords are removed?
@@ -148,7 +148,8 @@ topNwords= findFreqTerms(tdm, 310, Inf); topNwords
 #terms that contain an url
 urls1 = grep("^https?:", trms, perl=TRUE, value = TRUE)
 
-# remove punctuation chars from urls, at tail+head
+# Remove punctuation chars from urls, but only from beforebeginning of string and after the end. 
+# Keep punctuation chars inside URLs 
 urls1 = lapply (urls1 , function(x){urls1[x] =rmPunc(x)});
 urls1 = lapply (urls1 , function(x){urls1[x] = gsub('\\.?\\n?url$', "", x, perl=TRUE)});
 
