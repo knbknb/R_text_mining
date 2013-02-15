@@ -3,46 +3,25 @@
 # Author: knb
 # Build a corpus from AGU FALL MEETING 2012 abstracts
 ###############################################################################
-#library("Hmisc")
 
-rmPunc =  function(x){
-	# lookbehinds :
-	# need to be careful to specify fixed-width conditions 
-	# so that it can be used in lookbehind
-	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”\\|:±</>]{9})([[:alnum:]])',"\\2", x, perl=TRUE) ;
-	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”:±</>]{8})([[:alnum:]])',"\\2", x, perl=TRUE) ;
-	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”\\|:±</>]{7})([[:alnum:]])',"\\2", x, perl=TRUE) ;
-	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”:±</>]{6})([[:alnum:]])',"\\2", x, perl=TRUE) ;
-	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”\\|:±</>]{5})([[:alnum:]])',"\\2", x, perl=TRUE) ;
-	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”:±</>]{4})([[:alnum:]])',"\\2", x, perl=TRUE) ;
-	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”:±</>]{3})([[:alnum:]])',"\\2", x, perl=TRUE) ;
-	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”:±</>]{2})([[:alnum:]])',"\\2", x, perl=TRUE) ;
-	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”:±</>])([[:alnum:]])',"\\2", x, perl=TRUE) ; 
-	# lookbehind there must be a word char to the left and punct/whitespace stuff to the end.
-	# append 1 extra blank 
-	x <- gsub('(.*?)(?<=[[:alnum:]])([[:space:][:punct:]’“”:±</>\\\\]+?)$',"\\1", x, perl=TRUE)
-	
-	# remove all strings that consist *only* of punct chars 
-	x <- gsub('^[[:space:][:punct:]’“”:±</>\\\\]+$',"", x, perl=TRUE) ;
-	x
-	
-}
-
-cleanup = function(doc, sep= " "){
-	doc = gsub("body:", "", doc, perl=TRUE);
-	y = strsplit(doc, sep); 
-	
-	y = lapply(y, rmPunc); 
-	y[grep("\\S+", y, invert=FALSE, perl=TRUE)]; 
-	
-	y = sapply(y, paste, sep=" ")
-	paste(y, collapse = sep)
-	#y
-}
-
+#### 
+#### config
+#### 
+homedir="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/"
+urlprefix="http://fallmeeting.agu.org/2012/eposters/eposter/"
 wekajar="/usr/local/lib/R/site-library/RWekajars/java/weka.jar"
-#Sys.setenv(CLASSPATH=paste(Sys.getenv("CLASSPATH"),wekajar, sep=":"))
+verbose = TRUE
+show_n = 3  #show n items
+outdir2="data/abstracts-agu/informatics"
+wd=getwd()
+####
 
+
+#source("/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/R_utils/util.R")
+source(paste0(homedir,"scripts/utils_text_mining.R"))
+
+
+#Sys.setenv(CLASSPATH=paste(Sys.getenv("CLASSPATH"),wekajar, sep=":"))
 Sys.setenv(JAVA_HOME="")
 Sys.setenv(CLASSPATH=paste(wekajar, sep=":"))
 Sys.getenv("CLASSPATH")
@@ -53,8 +32,9 @@ library("tm")
 
 #library("wordnet") # dictionaries
 
-#csv = read.csv("/data/virtualbox/sharedfolder/itinerary-all.csv", header=TRUE, sep=",", quote="\"", fileEncoding = "UTF8")
-csv = read.csv("~/code/svn/eclipse38_dynlang/R_one-offs/text_mining/abstracts-agu/itinerary-volcanology.csv", header=TRUE, sep=",", quote="\"", fileEncoding = "UTF8")
+csv = read.csv(paste0(homedir, "data/abstracts-agu/itinerary-volcanology.csv"), header=TRUE, sep=",", quote="\"", fileEncoding = "UTF8")
+#csv = read.csv(paste0(homedir, "/abstracts-agu/itinerary-volcanology.csv", header=TRUE, sep=",", quote="\"", fileEncoding = "UTF8"))
+
 
 bodies= csv[,18] #col 18 is abstract body
 names(csv)
@@ -84,14 +64,17 @@ corpus <- corpus[grep("\\S+", corpus, invert=FALSE, perl=TRUE)]
 #'arg' should be one of 
 #' “title”, “creator”, “description”, “date”, “identifier”, “language”, “subject”, 
 #' “publisher”, “contributor”, “type”, “format”, “source”, “relation”, “coverage”, “rights”
-cnt = length(corpus)
-#cnt = 3
+if (verbose == TRUE){
+	cnt = length(corpus)
+} else {
+  cnt = show_n
+}
 for (i in seq(from= 1, to=cnt, by=1)){
     print(paste(i, " ", substr(corpus[[i]], 1, 140), sep = " "))
 	DublinCore(corpus[[i]], "creator") = rmPunc(csv[[i,14]])      #abstract presenter
 	DublinCore(corpus[[i]], "title") = csv[[i,10]]  #abstract title => heading
 	DublinCore(corpus[[i]], "description") = paste(csv[[i,11]] , csv[[i,1]], sep=": ") #final id => description
-	DublinCore(corpus[[i]], "source" ) = paste0("http://fallmeeting.agu.org/2012/eposters/eposter/", csv[[i,11]])
+	DublinCore(corpus[[i]], "source" ) = paste0(urlprefix, csv[[i,11]])
 	DublinCore(corpus[[i]], "Publisher" ) = csv[[i,16]]   #institutions
 	DublinCore(corpus[[i]], "contributor" ) =  gsub('[[:space:]]+'," ", cleanup(csv[[i,15]], ";") , perl=TRUE) ;  #all authors
 	#attr(corpus[[i]], "Origin") = csv[[i,16]]   #institutions
@@ -99,7 +82,7 @@ for (i in seq(from= 1, to=cnt, by=1)){
 		
 }
 
-cnt=3
+cnt=show_n
 meta(corpus[[cnt]])
 #save.image("/home/knb/code/svn/eclipse38_dynlang/R_one-offs/text_mining/01-corpus-metadata.RData")
 
@@ -113,11 +96,10 @@ tm::inspect(head(corpus, n=cnt))
 #tm::inspect(head(corpus, n=cnt))
 #corpus <- Corpus(VectorSource(corpus))
 
-earthsci_stopwords = c( "data", "earth", "science", "using" ) # "(..," 
 #"system", "model", "..", "..,", "information"
 
 print("removing stopwords...")
-corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), earthsci_stopwords)) })
+corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
 
 tm::inspect(head(corpus, n=cnt))
 
@@ -133,9 +115,9 @@ show(corpus)
 
 
 tm::inspect(head(corpus, n=cnt))
-wd=getwd()
+
 fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
-outdir2="abstracts-agu/informatics"
+
 system(paste0("mkdir -p ", wd, "/", outdir2))
 outdir=paste0(wd, "/", outdir2)
 outdir
