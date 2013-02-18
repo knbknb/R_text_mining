@@ -35,7 +35,8 @@ Now export the data:
   - Click "Export Itinerary + Abstracts Excel" (see center right of page)
   - A pop-up box will open. Your CSV file will be generated. It will take less than ten minutes. The estimate given on the pop-up box will be much higher. The page will refresh itself periodically. When it is done, another pop-up box will open, with a "download file" notification. The default filename will be itinerary.csv
   - Download the data file. Rename it after you downloaded it. Copy or move it to your working directory of your R Session.
-  - A sample data file is provided with this github repo. It is called ""itinerary--nonlin-geophys--sample-data-file.csv" and has 470 kB.
+  - A sample data file is provided with this github repository. It is called [itinerary--nonlin-geophys--sample-data-file.csv](itinerary--nonlin-geophys--sample-data-file.csv) and has a size of 470 kB.
 
  [1]:  http://fallmeeting.agu.org/2012/scientific-program/
  [2]:  http://agu-fm12.abstractcentral.com/planner.jsp
+ 
