@@ -24,13 +24,14 @@ wekajar="/usr/local/lib/R/site-library/RWekajars/java/weka.jar"
 verbose = TRUE
 select_n = 3  #show n items
 outdir2="_default_outdir"
+procscript="process_corpus.R"
 wd=getwd()
 ####
 full_outfilename = function(x) {paste0(outfileprefix, x, outfileext)} 
 full_datadir = function(){paste0(homedir, datadir)}
 full_rdatadir = function(){paste0(homedir, Rdatadir)}
 full_outdir2 = function(){paste0(homedir, datadir, outdir2)}
-
+full_rdatafile = function(){paste0(full_rdatadir(), outfile)}
 
 source(paste0(homedir,"scripts/utils_text_mining.R"))
 
@@ -50,6 +51,10 @@ option_list <- list(
 		make_option(c("-i", "--infile"), type="character", 
 				default="abstracts.csv", dest="infile",
 				help= paste0("Infile, must be a CSV file and end in .csv")),
+		make_option(c("-ov", "--override"), 
+				action="store_true", 
+				default=FALSE, dest="override",
+				help="Overwrite pre-existing .RData file "),
 		make_option(c("-od", "--outdir"), type="character", 
 				default=outdir2, dest="outdir",
 				help= paste0("Outdir, must be a subdir name such as 'volcanology' ")),
@@ -78,10 +83,16 @@ opts = parse_args(parser, args = commandArgs(),
 
 tmpenv <- new.env()
 
+override=opts$options$override
 infile = opts$options$infile
 outdir2 = opts$options$outdir
 outfile= opts$options$outfile
 outfile=full_outfilename(outfile);
+
+if(file.exists(full_rdatafile()) && !override){
+	warning('A file already exists at "',full_rdatafile(),'", quitting\n')
+	quit()
+}
 
 if (! file_ext(infile) == ".csv"){
 	print_help(parser)
@@ -179,13 +190,34 @@ show(corpus)
 
 tm::inspect(head(corpus, n=cnt))
 
-#fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
-#fn = text_mining_util$trim(fn)
-#system(paste0("mkdir -p ", full_outdir2()))
+# create a dirsource with text documents. this is optional. 
+# it allows for checking intermediate results. 
+# Just open small text file that remains from each document. 
+fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
+fn = text_mining_util$trim(fn)
+system(paste0("mkdir -p ", full_outdir2()))
 
-#paste0("Writing corpus to files '", fn, "', outdir = ", full_outdir2())
-#writeCorpus(corpus, outdir, filenames=fn )
+paste0("Writing corpus to files '", fn, "', outdir = ", full_outdir2())
+writeCorpus(corpus, full_outdir2(), filenames=fn )
 
 
 paste0("Writing corpus to .Rdata file '", outfile, "', outdir = ", full_rdatadir())
-save.image(file=outfile)
+save.image(file=full_rdatafile())
+print(paste0("Now you can execute "))
+print(paste0(procscript, " --infile ", full_rdatafile()))
+
+#remove local .RData file in case the script was called with Rscript --save
+rmrdata = tryCatch(
+		unlink(".RData"),
+		error=function(e) {
+			message(paste("Local .RData file does not seem to exist, but that's okay."))
+			message("Here's the original error message:")
+			message(e)
+			# Choose a return value in case of error
+			return(NA)
+		},
+		finally={
+			#message(paste("Processed URL:", url))
+			#message("Some other message at the end")
+})
+rmrdata
