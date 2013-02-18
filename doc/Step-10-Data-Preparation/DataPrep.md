@@ -15,7 +15,9 @@ From here on, direct URLs can not longer provided, as abstractcentral.com relies
  
  - Click on "Browse he program" (see left margin of page)
 
-Now you are on an itinerary page. There are 5 rows, one for each week day.
+Now you are on an itinerary page. There are 5 rows, one for each week day. The rows are empty for now, because your itinerary is empty. 
+
+To fill the itinerary:
 
  - Click on Select-Box "Select topic" (see right margin of page). A  menu will fly out.
  - In the menu, choose one or more "session topics": These are subcategories of Earth Science according to the conference organizers.
