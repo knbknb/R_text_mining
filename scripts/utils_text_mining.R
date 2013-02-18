@@ -18,6 +18,12 @@ text_mining_util$earthsci_stopwords = function(){
 	c( "data", "earth", "science", "using" ) # "(..,"
 }
 
+
+# returns string w/o trailing whitespace
+text_mining_util$trim.leading  <- function (x) {sub("^\\s+", "", x)}
+text_mining_util$trim.trailing <- function (x) {sub("\\s+$", "", x)}
+text_mining_util$trim <- function (x) {x = text_mining_util$trim.trailing(x);text_mining_util$trim.leading(x)}
+
 text_mining_util$rmPunc =  function(x){
 	# lookbehinds :
 	# need to be careful to specify fixed-width conditions 
@@ -45,12 +51,12 @@ text_mining_util$cleanup = function(doc, sep= " "){
 	doc = gsub("body:", "", doc, perl=TRUE);
 	y = strsplit(doc, sep); 
 	
-	y = lapply(y, rmPunc); 
-	y[grep("\\S+", y, invert=FALSE, perl=TRUE)]; 
+	y = lapply(y, text_mining_util$rmPunc); 
+	#y[grep("\\S+", y, invert=FALSE, perl=TRUE)]; 
 	
-	y = sapply(y, paste, sep=" ")
-	paste(y, collapse = sep)
-	#y
+	#y = sapply(y, paste, sep=" ")
+	#paste(y, collapse = sep)
+	y
 }
 
 

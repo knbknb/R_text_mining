@@ -9,17 +9,27 @@
 # Build a corpus from AGU FALL MEETING 2012 abstracts, write it out to an Rdata file
 ###############################################################################
 
+
 #### 
 #### config
 #### 
 homedir="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/"
+datadir="data/abstracts-agu/"
+Rdatadir="data/Rdata/"
+outfileprefix="corpus--"
+outfilename="--with-metadata--"
+outfileext=".RData"
 urlprefix="http://fallmeeting.agu.org/2012/eposters/eposter/"
 wekajar="/usr/local/lib/R/site-library/RWekajars/java/weka.jar"
 verbose = TRUE
 select_n = 3  #show n items
-outdir2="data/abstracts-agu/informatics"
+outdir2="_default_outdir"
 wd=getwd()
 ####
+full_outfilename = function(x) {paste0(outfileprefix, x, outfileext)} 
+full_datadir = function(){paste0(homedir, datadir)}
+full_rdatadir = function(){paste0(homedir, Rdatadir)}
+full_outdir2 = function(){paste0(homedir, datadir, outdir2)}
 
 
 source(paste0(homedir,"scripts/utils_text_mining.R"))
@@ -33,10 +43,64 @@ Sys.setenv(NOAWT=TRUE) # advice from an internet forum, not sure what this does 
 
 library("RWeka")  # stemming and tokenization, called by tm
 library("tm") #text mining
+library("optparse")
+library("tools") # Utilities for listing files, and manipulating file paths.
+
+option_list <- list(
+		make_option(c("-i", "--infile"), type="character", 
+				default="abstracts.csv", dest="infile",
+				help= paste0("Infile, must be a CSV file and end in .csv")),
+		make_option(c("-od", "--outdir"), type="character", 
+				default=outdir2, dest="outdir",
+				help= paste0("Outdir, must be a subdir name such as 'volcanology' ")),
+		make_option(c("-of", "--outfile"), type="character", 
+				default=full_outfilename(outfilename), dest="outfile",
+				help= paste0("Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)")),		
+		make_option(c("-v", "--verbose"), 
+				action="store_true", default=TRUE,
+				help="Print extra output [default]"),
+		make_option(c("-q", "--quietly"), 
+				action="store_false",
+				dest="verbose", help="Print little output"))
+
+parser <- OptionParser(usage = "%prog [options] file", option_list=option_list,
+		add_help_option = TRUE,
+		prog = NULL,
+		description = "", epilogue = paste0("Infile must be .csv file with AGU abstracts 
+exported from http://agu-fm12.abstractcentral.com.
+Filename can be absolute path or relative path.
+If relative path, then infile will be loaded from
+'", full_datadir(), "'
+ "))
+#outputs options parsed
+opts = parse_args(parser, args = commandArgs(),
+		positional_arguments = TRUE)
+
+tmpenv <- new.env()
+
+infile = opts$options$infile
+outdir2 = opts$options$outdir
+outfile= opts$options$outfile
+outfile=full_outfilename(outfile);
+
+if (! file_ext(infile) == ".csv"){
+	print_help(parser)
+}
+if(!file.exists(infile)){
+	if(!file.exists(infile)){
+		infile = paste0(full_datadir(), infile)
+		print_help(parser)
+	} else {
+		print(paste0("Loading '", infile, "' ..."))
+	}
+	
+} else {
+	print(paste0("Loading '", infile, "' ..."))
+}
 
 #library("wordnet") # dictionaries
 
-csv = read.csv(paste0(homedir, "data/abstracts-agu/itinerary-volcanology.csv"), header=TRUE, sep=",", quote="\"", fileEncoding = "UTF8")
+csv = read.csv(infile, header=TRUE, sep=",", quote="\"", fileEncoding = "UTF8")
 #csv = read.csv(paste0(homedir, "/abstracts-agu/itinerary-volcanology.csv", header=TRUE, sep=",", quote="\"", fileEncoding = "UTF8"))
 
 
@@ -95,35 +159,33 @@ meta(corpus[[cnt]])
 corpus <- tm_map(corpus, tolower)
 tm::inspect(head(corpus, n=cnt))
 
-#print("cleaning up punctuation around words...")
-#corpus <- tm_map(corpus, cleanup);
-#tm::inspect(head(corpus, n=cnt))
-#corpus <- Corpus(VectorSource(corpus))
 
-#"system", "model", "..", "..,", "information"
-
-print("removing stopwords...")
+print("Removing stopwords...")
 corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
 
 tm::inspect(head(corpus, n=cnt))
 
-#stopifnot(length(corpus) > 1000, )
-
-print("stemming...")
+print("Stemming...")
 
 corpus <- tm_map(corpus, function(x){stemDocument(x, language = "english")} )
 
+corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
 #length(corpus)
 show(corpus)
+#print("Cleaning up punctuation around words..., again")
+#corpus <- tm_map(corpus, text_mining_util$cleanup);
 
 
 
 tm::inspect(head(corpus, n=cnt))
 
-fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
+#fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
+#fn = text_mining_util$trim(fn)
+#system(paste0("mkdir -p ", full_outdir2()))
 
-system(paste0("mkdir -p ", homedir, "/", outdir2))
-outdir=paste0(homedir, "/", outdir2)
-paste("outdir = ", outdir)
-writeCorpus(corpus, outdir, filenames=fn )
+#paste0("Writing corpus to files '", fn, "', outdir = ", full_outdir2())
+#writeCorpus(corpus, outdir, filenames=fn )
 
+
+paste0("Writing corpus to .Rdata file '", outfile, "', outdir = ", full_rdatadir())
+save.image(file=outfile)
