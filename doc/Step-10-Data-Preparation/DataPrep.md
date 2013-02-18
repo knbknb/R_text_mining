@@ -22,7 +22,12 @@ To fill the itinerary:
  - Click on Select-Box "Select topic" (see right margin of page). A  menu will fly out.
  - In the menu, choose one or more "session topics": These are subcategories of Earth Science according to the conference organizers.
  - The page will be dynamically updated. The lower half of the page will be filled with conference sessions. each session comprises several talks, which are not visible by default. Click on a checkbox next to a single session/name subtopic that you are interested in. This will select *all* talks of that session.
- - Just after this first click on this checkbox, a pop-up box will open. To create a new itinerary: fill in the two text fields. In field, 1, invent a short title for your itinerary, and provide your email address. Click on "Create itinerary". The pop-up box will disappear.
+ - Just after this first click on this checkbox, a pop-up box will open. 
+ - To create a new itinerary: fill in the two text fields: 
+  - In field, 1, invent a short title for your itinerary
+  - In field 2, provide your email address. 
+ - Click on "Create itinerary". The pop-up box will disappear. 
+ - (Optional) Take a note of the name of your itinerary for future reference. Write it down somewhere.
 
 Now export the data:
 
@@ -30,6 +35,7 @@ Now export the data:
   - Click "Export Itinerary + Abstracts Excel" (see center right of page)
   - A pop-up box will open. Your CSV file will be generated. It will take less than ten minutes. The estimate given on the pop-up box will be much higher. The page will refresh itself periodically. When it is done, another pop-up box will open, with a "download file" notification. The default filename will be itinerary.csv
   - Download the data file. Rename it after you downloaded it. Copy or move it to your working directory of your R Session.
+  - A sample data file is provided with this github repo. It is called ""itinerary--nonlin-geophys--sample-data-file.csv" and has 470 kB.
 
  [1]:  http://fallmeeting.agu.org/2012/scientific-program/
  [2]:  http://agu-fm12.abstractcentral.com/planner.jsp
