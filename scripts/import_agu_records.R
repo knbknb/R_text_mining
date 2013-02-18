@@ -1,7 +1,12 @@
-# TODO: Add comment
+#!/usr/bin/Rscript
+###############################################################################
+#
+#
+# https://github.com/knbknb/R_text_mining/
+#
 # $Id: import_agu_records.R 3357 2013-02-14 15:37:13Z knb $
 # Author: knb
-# Build a corpus from AGU FALL MEETING 2012 abstracts
+# Build a corpus from AGU FALL MEETING 2012 abstracts, write it out to an Rdata file
 ###############################################################################
 
 #### 
@@ -17,7 +22,6 @@ wd=getwd()
 ####
 
 
-#source("/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/R_utils/util.R")
 source(paste0(homedir,"scripts/utils_text_mining.R"))
 
 
@@ -121,53 +125,5 @@ fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
 system(paste0("mkdir -p ", homedir, "/", outdir2))
 outdir=paste0(homedir, "/", outdir2)
 paste("outdir = ", outdir)
-#writeCorpus(corpus, outdir, filenames=fn )
+writeCorpus(corpus, outdir, filenames=fn )
 
-# do not use when stopwords are removed?
-#BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 4))
-#tdm <- TermDocumentMatrix(corpus, control = list(tokenize = BigramTokenizer))
-#tdm = DocumentTermMatrix(corpus, control=list(tokenize= "NGramTokenizer"))
-tdm = TermDocumentMatrix(corpus)
-#tdm
-#attributes(tdm)
-##rownames(tdm)
-#colnames(tdm)
-#dimnames(tdm)
-#
-
-trms = Terms(tdm)
-LocalMetaData(trms[1])
-# docs = Doucments
-# topNwords= findFreqTerms(tdm, 25, Inf); topNwords
-#head(trms, n=200)
-topNwords= findFreqTerms(tdm, 310, Inf); topNwords
-
-#terms that do not contain an url
-#urls0 = grep("^https?:", trms, perl=TRUE, value = FALSE)
-
-#terms that contain an url
-urls1 = grep("^https?:", trms, perl=TRUE, value = TRUE)
-
-# Remove punctuation chars from urls, but only from beforebeginning of string and after the end. 
-# Keep punctuation chars inside URLs 
-urls1 = lapply (urls1 , function(x){urls1[x] =rmPunc(x)});
-urls1 = lapply (urls1 , function(x){urls1[x] = gsub('\\.?\\n?url$', "", x, perl=TRUE)});
-
-#github_urls = grep("github", trms[urls0], perl=TRUE, value = TRUE )
-
-urls1 = unique(urls1[order(nchar(urls1))])
-#url= tm_filter(tdm, "http")
-
-
-tdm2 = removeSparseTerms(tdm, 0.95)
-inspect(tdm2[1:20,1:1])
-
-trms2=Terms(tdm2)
-head(trms2, n= 20)
-topNwords2= findFreqTerms(tdm2, 310, Inf); topNwords2
-#lapply(topNwords2, function(x){df = data.frame(x, findAssocs(tdm2, x, 0.1));  })
-sort(topNwords2[-grep("[aei]", topNwords2)])
-#main.term"
-#names(df)[1] = "associated.word"
-tm_filter(corpus, pattern="github")
-tm_map(tm_filter(corpus, pattern="github"), function(x){c(meta(x), x)})
