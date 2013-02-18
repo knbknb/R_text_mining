@@ -25,10 +25,10 @@ source(paste0(homedir,"scripts/utils_text_mining.R"))
 Sys.setenv(JAVA_HOME="")
 Sys.setenv(CLASSPATH=paste(wekajar, sep=":"))
 Sys.getenv("CLASSPATH")
-Sys.setenv(NOAWT=TRUE)
+Sys.setenv(NOAWT=TRUE) # advice from an internet forum, not sure what this does w.r.t weka.jar
 
 library("RWeka")  # stemming and tokenization, called by tm
-library("tm")
+library("tm") #text mining
 
 #library("wordnet") # dictionaries
 
