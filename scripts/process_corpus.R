@@ -9,20 +9,20 @@
 # read an Rdata file containing corpus built from AGU FALL MEETING 2012 abstracts, 
 # write it out to an Rdata file
 ####
-
 homedir="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/"
-datadir="data/"
-verbose = TRUE
+datadir="data/abstracts-agu/"
+Rdatadir="data/Rdata/"
 select_n = 3  #show n items
+outdir2="_default_outdir"
 
-# store stemmed documents here as single .txt file here, example: 01053.txt
-outdir2="data/abstracts-agu/informatics" 
+
 
 wd=getwd()
 
 library(optparse)
 library("tm") #text mining
 library("tools") # Utilities for listing files, and manipulating file paths.
+source(paste0(homedir,"scripts/utils_text_mining.R"))
 
 option_list <- list(
 		make_option(c("-i", "--infile"), type="character", 
@@ -59,7 +59,7 @@ if(!file.exists(infile)){
 load(infile, envir=tmpenv)
 corpus <- tmpenv$corpus
 show(corpus)
-quit()
+
 # do not use when stopwords are removed?
 #BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 4))
 #tdm <- TermDocumentMatrix(corpus, control = list(tokenize = BigramTokenizer))
@@ -87,7 +87,7 @@ urls1 = grep("^https?:", trms, perl=TRUE, value = TRUE)
 
 # Remove punctuation chars from urls, but only from beforebeginning of string and after the end. 
 # Keep punctuation chars inside URLs 
-urls1 = lapply (urls1 , function(x){urls1[x] =rmPunc(x)});
+urls1 = lapply (urls1 , function(x){urls1[x] =text_mining_util$rmPunc(x)});
 urls1 = lapply (urls1 , function(x){urls1[x] = gsub('\\.?\\n?url$', "", x, perl=TRUE)});
 
 #github_urls = grep("github", trms[urls0], perl=TRUE, value = TRUE )
