@@ -14,16 +14,20 @@ You will need these R packages from CRAN. Install them with the install.packages
 
  - To perform word stemming, *tm* package calls external Java code in weka.jar. So a Java JVM must be installed on your machine. 
  - Classpath must be correctly set to enable R to interact with weka.jar. This Classpath value can be machine-dependent. Environment Variables might need to be set.
- Look at the R script code in the src dir. You might need to change the "config" section.
+ Look at the R script code in the "scripts" dir. You might need to change the "config" section.
 
 Script Usage
 =========
 
-Run the scripts in the "scripts" directory individually.
+Run the scripts in the ["scripts"](scripts) directory individually. Read here *how* you use the scripts.
+
+Please read the documentation in the ["doc"](doc) directory of this repo for an explanation of  *what* the scripts are doing.
+
+
 
     ./import_agu_records.R --help
 
-This creates a corpus stored in an .RData file. Please read the documentation in the "doc" directory of this repo.
+This creates a corpus stored in an .RData file. 
 
 
     ./import_agu_records.R --help
@@ -59,6 +63,30 @@ This creates a corpus stored in an .RData file. Please read the documentation in
     exported from http://agu-fm12.abstractcentral.com.
     Filename can be absolute path or relative path.
     If relative path, then infile will be loaded from
-    '/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/data/abstracts-agu/'
+    '.../R_text_mining/data/abstracts-agu/'
 
+
+This loads an .RData file, creates a term-document-matrix from the corpus in the .RData file (must be in variable *corpus*):
+
+
+    ./process_corpus.R --help
+    
+Output:    
+    
+    Loading required package: methods
+    Usage: ./process_corpus.R [options] file
+    
+    
+    Options:
+     -i INFILE, --infile=INFILE
+    		Infile (must be .Rdata file with tm text corpus stored in variable 'corpus'
+    
+    	-v, --verbose
+    		Print extra output [default]
+    
+    	-q, --quietly
+    		Print little output
+    
+    	-h, --help
+    		Show this help message and exit
 
