@@ -24,10 +24,20 @@ Run the scripts in the ["scripts"](scripts) directory individually. Read here *h
 Please read the documentation in the ["doc"](doc) directory of this repo for an explanation of  *what* the scripts are doing.
 
 
+    ./import_agu_records.R --infile itinerary-seismology.csv  --outdir seismology-and-deep-earth
+ 
 
-    ./import_agu_records.R --help
 
-This creates a corpus stored in an .RData file. 
+import_agu_records.R creates a corpus stored in an .RData file. 
+
+
+    ./process_corpus.R --infile .../R_text_mining/data/Rdata/corpus--corpus.RData.RData
+    
+process_corpus.R loads an .RData file, creates a term-document-matrix from the corpus in the .RData file (must be in variable *corpus*):
+
+
+Script Command Line Options Overview
+=========
 
 
     ./import_agu_records.R --help
@@ -66,7 +76,6 @@ This creates a corpus stored in an .RData file.
     '.../R_text_mining/data/abstracts-agu/'
 
 
-This loads an .RData file, creates a term-document-matrix from the corpus in the .RData file (must be in variable *corpus*):
 
 
     ./process_corpus.R --help
