@@ -3,7 +3,7 @@ R_text_mining
 
 **Work in progress**.
 
-R project: Build a text-mining corpus from [abstracts][0] of science contributions, 
+R project: perform *text-mining* on  [abstracts][0] of science contributions, 
 presented at the AGU Fall Meeting 2012, San Francisco. 
 This was a big annual conference for Earth scientists, in particular geophysicists and geologists.
 
