@@ -1,4 +1,4 @@
-Step 10 - Data Preparation
+Step 10 - Data Acquisition and Preparation 
 =============
 
 
