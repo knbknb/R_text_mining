@@ -17,21 +17,22 @@ homedir="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/"
 datadir="data/abstracts-agu/"
 Rdatadir="data/Rdata/"
 outfileprefix="corpus--"
-outfilename="--with-metadata--"
+outfilename="" # --with-metadata--
 outfileext=".RData"
 urlprefix="http://fallmeeting.agu.org/2012/eposters/eposter/"
 wekajar="/usr/local/lib/R/site-library/RWekajars/java/weka.jar"
-verbose = TRUE
-select_n = 3  #show n items
 outdir2="_default_outdir"
 procscript="process_corpus.R"
+max_length=50 # constrain verbosity
 wd=getwd()
+show_n_default=3
 ####
-full_outfilename = function(x) {paste0(outfileprefix, x, outfileext)} 
 full_datadir = function(){paste0(homedir, datadir)}
 full_rdatadir = function(){paste0(homedir, Rdatadir)}
-full_outdir2 = function(){paste0(homedir, datadir, outdir2)}
-full_rdatafile = function(){paste0(full_rdatadir(), outfile)}
+full_outdir_corpusfiles = function(){paste0(homedir, datadir, outdir2)}
+full_outfilename = function(pre ,x, suf) {paste0(pre, x, suf)} #components of the data file
+full_rdatafile = function(x){paste0(full_rdatadir(), x)} # not a full path
+abspath_rdatafile = function(x){paste0(full_rdatadir(), full_rdatafile(x))} # not a full path
 
 source(paste0(homedir,"scripts/utils_text_mining.R"))
 
@@ -47,25 +48,29 @@ library("tm") #text mining
 library("optparse")
 library("tools") # Utilities for listing files, and manipulating file paths.
 
+#options must be -s single-letter or --longer-string. -dd double letters don't work 
 option_list <- list(
 		make_option(c("-i", "--infile"), type="character", 
 				default="abstracts.csv", dest="infile",
 				help= paste0("Infile, must be a CSV file and end in .csv")),
-		make_option(c("-ov", "--override"), 
+		make_option(c("-x", "--override"), 
 				action="store_true", 
 				default=FALSE, dest="override",
 				help="Overwrite pre-existing .RData file "),
-		make_option(c("-od", "--outdir"), type="character", 
+		make_option(c("-d", "--outdir"), type="character", 
 				default=outdir2, dest="outdir",
 				help= paste0("Outdir, must be a subdir name such as 'volcanology' ")),
-		make_option(c("-of", "--outfile"), type="character", 
-				default=full_outfilename(outfilename), dest="outfile",
+		make_option(c("-f", "--outfile"), type="character", 
+				default=full_outfilename(outfileprefix, outfilename, outfileext), dest="outfile",
 				help= paste0("Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)")),		
 		make_option(c("-v", "--verbose"), 
-				action="store_true", default=TRUE,
-				help="Print extra output [default]"),
+				action="store_true", default=FALSE,
+				help="Print (a lot of) extra output [default=false]"),
+		make_option(c("-n", "--show_n"), 
+				type="integer", default=show_n_default, dest="show_n",
+				help=paste0("Show this many records in full. [default = ", show_n_default, "]")),
 		make_option(c("-q", "--quietly"), 
-				action="store_false",
+				action="store_false", default=TRUE,
 				dest="verbose", help="Print little output"))
 
 parser <- OptionParser(usage = "%prog [options] file", option_list=option_list,
@@ -81,16 +86,17 @@ If relative path, then infile will be loaded from
 opts = parse_args(parser, args = commandArgs(),
 		positional_arguments = TRUE)
 
+
 tmpenv <- new.env()
 
 override=opts$options$override
 infile = opts$options$infile
 outdir2 = opts$options$outdir
-outfile= opts$options$outfile
-outfile=full_outfilename(outfile);
+outfile=full_outfilename(outfileprefix, opts$options$outfile, outfileext);
+show_n = opts$options$show_n  #show n items
 
-if(file.exists(full_rdatafile()) && !override){
-	warning('A file already exists at "',full_rdatafile(),'", quitting\n')
+if(file.exists(abspath_rdatafile(outfile)) && !override){
+	warning('A file already exists at "',abspath_rdatafile(outfile),'", quitting\n')
 	quit()
 }
 
@@ -111,17 +117,19 @@ if(!file.exists(infile)){
 
 #library("wordnet") # dictionaries
 
-csv = read.csv(infile, header=TRUE, sep=",", quote="\"", fileEncoding = "UTF8")
+csv = read.csv(infile, header=TRUE, sep=",", quote="\"", fileEncoding = "UTF8")  #"
 #csv = read.csv(paste0(homedir, "/abstracts-agu/itinerary-volcanology.csv", header=TRUE, sep=",", quote="\"", fileEncoding = "UTF8"))
 
 
 bodies= csv[,18] #col 18 is abstract body
 names(csv)
-#[1] "X.Session.or.Event.Title"           "Session.or.Event.Abbreviation"     
-#[3] "Session.or.Event.Type"              "Session.or.Event.Topic"            
-#[5] "Session.or.Event.Date"              "Session.or.Event.Start.Time"       
-#[7] "Session.or.Event.End.Time"          "Session.or.Event.Location"         
-#[9] "Session.or.Event.Details"           "Abstract.or.Placeholder.Title"     
+
+# Column List:
+# [1] "X.Session.or.Event.Title"           "Session.or.Event.Abbreviation"     
+# [3] "Session.or.Event.Type"              "Session.or.Event.Topic"            
+# [5] "Session.or.Event.Date"              "Session.or.Event.Start.Time"       
+# [7] "Session.or.Event.End.Time"          "Session.or.Event.Location"         
+# [9] "Session.or.Event.Details"           "Abstract.or.Placeholder.Title"     
 #[11] "Abstract.Final.ID"                  "Abstract.or.Placeholder.Start.Time"
 #[13] "Abstract.or.Placeholder.End.Time"   "Abstract.Presenter.Name"           
 #[15] "Abstract.Authors"                   "Institutions.All"                  
@@ -143,71 +151,73 @@ corpus <- corpus[grep("\\S+", corpus, invert=FALSE, perl=TRUE)]
 #'arg' should be one of 
 #' “title”, “creator”, “description”, “date”, “identifier”, “language”, “subject”, 
 #' “publisher”, “contributor”, “type”, “format”, “source”, “relation”, “coverage”, “rights”
-if (verbose == TRUE){
-	cnt = length(corpus)
-} else {
-  cnt = select_n
-}
-for (i in seq(from= 1, to=cnt, by=1)){
-    print(paste(i, " ", substr(corpus[[i]], 1, 140), sep = " "))
-	DublinCore(corpus[[i]], "creator") = rmPunc(csv[[i,14]])      #abstract presenter
+if (opts$options$verbose == TRUE){
+	show_n = min(length(corpus), max_length)
+} 
+print("Generating Metadata Records...")
+for (i in seq(from= 1, to=length(corpus), by=1)){
+	if(opts$options$verbose == TRUE){
+		print(paste(i, " ", substr(corpus[[i]], 1, 140), sep = " "))
+	}
+    
+	DublinCore(corpus[[i]], "creator") = text_mining_util$rmPunc(csv[[i,14]])      #abstract presenter
 	DublinCore(corpus[[i]], "title") = csv[[i,10]]  #abstract title => heading
-	DublinCore(corpus[[i]], "description") = paste(csv[[i,11]] , csv[[i,1]], sep=": ") #final id => description
-	DublinCore(corpus[[i]], "source" ) = paste0(urlprefix, csv[[i,11]])
+	DublinCore(corpus[[i]], "description") = paste(csv[[i,11]] , csv[[i,1]], sep=": ") #session id, session name
+	DublinCore(corpus[[i]], "source" ) = paste0(urlprefix, csv[[i,11]]) #URL to poster
 	DublinCore(corpus[[i]], "Publisher" ) = csv[[i,16]]   #institutions
-	DublinCore(corpus[[i]], "contributor" ) =  gsub('[[:space:]]+'," ", cleanup(csv[[i,15]], ";") , perl=TRUE) ;  #all authors
+	DublinCore(corpus[[i]], "contributor" ) =  gsub('[[:space:]]+'," ", text_mining_util$cleanup(csv[[i,15]], ";") , perl=TRUE) ;  #all authors
 	#attr(corpus[[i]], "Origin") = csv[[i,16]]   #institutions
 	#"Abstract.or.Placeholder.Start.Time"
 		
 }
 
-cnt=select_n
-meta(corpus[[cnt]])
-#save.image("/home/knb/code/svn/eclipse38_dynlang/R_one-offs/text_mining/01-corpus-metadata.RData")
 
-#gc()
-#stop()
+meta(corpus[[show_n]])
+
 corpus <- tm_map(corpus, tolower)
-tm::inspect(head(corpus, n=cnt))
+tm::inspect(head(corpus, n=show_n))
 
 
 print("Removing stopwords...")
 corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
 
-tm::inspect(head(corpus, n=cnt))
+tm::inspect(head(corpus, n=show_n))
 
-print("Stemming...")
+print("Stemming... (and removing stopwords, 2nd pass)")
 
 corpus <- tm_map(corpus, function(x){stemDocument(x, language = "english")} )
-
 corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
-#length(corpus)
+
+
 show(corpus)
 #print("Cleaning up punctuation around words..., again")
 #corpus <- tm_map(corpus, text_mining_util$cleanup);
-
-
-
-tm::inspect(head(corpus, n=cnt))
+print("Printing a few sample documents")
+tm::inspect(head(corpus, n=show_n))
 
 # create a dirsource with text documents. this is optional. 
 # it allows for checking intermediate results. 
 # Just open small text file that remains from each document. 
 fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
 fn = text_mining_util$trim(fn)
-system(paste0("mkdir -p ", full_outdir2()))
+system(paste0("mkdir -p ", full_outdir_corpusfiles()))
 
-paste0("Writing corpus to files '", fn, "', outdir = ", full_outdir2())
-writeCorpus(corpus, full_outdir2(), filenames=fn )
+paste0("Writing corpus to files '", fn, "', outdir = ", full_outdir_corpusfiles())
+writeCorpus(corpus, full_outdir_corpusfiles(), filenames=fn )
 
 
 paste0("Writing corpus to .Rdata file '", outfile, "', outdir = ", full_rdatadir())
-save.image(file=full_rdatafile())
-print(paste0("Now you can execute "))
-print(paste0(procscript, " --infile ", full_rdatafile()))
+save.image(file=full_rdatafile(outfile))
+print(paste0("You can load the .RData file into an R session and experiment with it, interactively."))
+print(paste0("load('", full_rdatafile(outfile), "')"))
+print(paste0("But you can also create a Term-Document-Matrix by executing "))
+print(paste0(procscript, " --infile ", full_rdatafile(outfile)))
 
-#remove local .RData file in case the script was called with Rscript --save
-rmrdata = tryCatch(
+
+
+#remove local .RData file in case the script was called with Rscript --save. 
+# We just  have saved away everything. 
+tryCatch(
 		unlink(".RData"),
 		error=function(e) {
 			message(paste("Local .RData file does not seem to exist, but that's okay."))
@@ -220,4 +230,3 @@ rmrdata = tryCatch(
 			#message(paste("Processed URL:", url))
 			#message("Some other message at the end")
 })
-rmrdata
