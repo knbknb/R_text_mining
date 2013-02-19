@@ -143,6 +143,11 @@ stopifnot(length(bodies) > 0)
 corpus <- Corpus(VectorSource(words))
 class(corpus)
 
+print("Appending collection-level metadata to Corpus...")
+meta(corpus, type="corpus", "opts") =opts
+meta(corpus, type="corpus", "infile") =infile
+meta(corpus, type="corpus", "rdata") = abspath_rdatafile(outfile)
+
 corpus <- tm_map(corpus, stripWhitespace)
 #remove empty docs
 corpus <- corpus[grep("\\S+", corpus, invert=FALSE, perl=TRUE)]
@@ -154,33 +159,35 @@ corpus <- corpus[grep("\\S+", corpus, invert=FALSE, perl=TRUE)]
 if (opts$options$verbose == TRUE){
 	show_n = min(length(corpus), max_length)
 } 
+print("")
+tm::inspect(head(corpus, n=show_n))
 print("Generating Metadata Records...")
-for (i in seq(from= 1, to=length(corpus), by=1)){
-	if(opts$options$verbose == TRUE){
-		print(paste(i, " ", substr(corpus[[i]], 1, 140), sep = " "))
+len=10 #length(corpus)
+
+for (i in seq(from= 1, to=len, by=1)){
+	if(opts$options$verbose == TRUE || i %% 50 == 0){
+		print(paste(date(), "-", i, "of", len, substr(corpus[[i]], 1, 140), sep = " "))
 	}
-    
 	DublinCore(corpus[[i]], "creator") = text_mining_util$rmPunc(csv[[i,14]])      #abstract presenter
 	DublinCore(corpus[[i]], "title") = csv[[i,10]]  #abstract title => heading
 	DublinCore(corpus[[i]], "description") = paste(csv[[i,11]] , csv[[i,1]], sep=": ") #session id, session name
 	DublinCore(corpus[[i]], "source" ) = paste0(urlprefix, csv[[i,11]]) #URL to poster
 	DublinCore(corpus[[i]], "Publisher" ) = csv[[i,16]]   #institutions
 	DublinCore(corpus[[i]], "contributor" ) =  gsub('[[:space:]]+'," ", text_mining_util$cleanup(csv[[i,15]], ";") , perl=TRUE) ;  #all authors
-	#attr(corpus[[i]], "Origin") = csv[[i,16]]   #institutions
-	#"Abstract.or.Placeholder.Start.Time"
-		
-}
+}	
 
-
-meta(corpus[[show_n]])
-
-corpus <- tm_map(corpus, tolower)
+print("")
+print("Finished with generating Metadata records:")
 tm::inspect(head(corpus, n=show_n))
+meta(corpus[[show_n]])
+corpus <- tm_map(corpus, tolower)
+#tm::inspect(head(corpus, n=show_n))
 
 
 print("Removing stopwords...")
 corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
 
+quit()
 tm::inspect(head(corpus, n=show_n))
 
 print("Stemming... (and removing stopwords, 2nd pass)")
