@@ -14,6 +14,11 @@ To learn more, read the documentation in directory /doc.
 This project will be presented at [EGU][2], the annual [General Assembly 2013][1], a conference in Vienna to happen in April 2013. 
 There will be a 15 minute talk about text-mining in R, on beginner level.
 
+For more information about the code, read the [CONFIGURATION_AND_USAGE.md](CONFIGURATION_AND_USAGE.md) file.
+Please read the documentation in the ["doc"](doc) directory of this repo for an explanation of  *what* the scripts are doing.
+
+
 [0]: http://agu-fm12.abstractcentral.com/planner.jsp
 [1]: http://www.egu2013.eu/
 [2]: http://www.egu.eu/
+
