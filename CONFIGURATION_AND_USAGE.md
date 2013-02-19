@@ -8,11 +8,12 @@ You will need these R packages from CRAN. Install them with the install.packages
  - *tm* - text mining. There are transitive dependencies such as
   - *rweka* - word stemming
  - *optparse* - parse command line options
- - tools -  Filename manipulation 
+ - *tools* -  Filename manipulation. Might be a core package.
 
 *R Package configuration - issues*
- - To perform word stemming, tm calls external Java code in weka.jar. So a Java JVM must be installed on your machine. 
- - Classpath must be correctly set to enable R to interact with call weka.jar. This value can be machine-dependent. 
+
+ - To perform word stemming, *tm* package calls external Java code in weka.jar. So a Java JVM must be installed on your machine. 
+ - Classpath must be correctly set to enable R to interact with weka.jar. This Classpath value can be machine-dependent. Environment Variables might need to be set.
  Look at the R script code in the src dir. You might need to change the "config" section.
 
 Script Usage
