@@ -9,13 +9,13 @@ This is a big annual conference for Earth scientists, in particular geophysicist
 
 Use R to draw interesting conclusions from a subset of the 23000 abstracts submitted. 
 
-To learn more, read the documentation in directory /doc.
+
 
 This project will be presented at [EGU][2], the annual [General Assembly 2013][1], a conference in Vienna to happen in April 2013. 
 There will be a 15 minute talk about text-mining in R, on beginner level.
 
 For more information about the code, read the [CONFIGURATION_AND_USAGE.md](CONFIGURATION_AND_USAGE.md) file.
-Please read the documentation in the ["doc"](doc) directory of this repo for an explanation of  *what* the scripts are doing.
+To learn even more, please read the documentation in the ["doc"](doc) directory of this repo for an explanation of  *what* the scripts are doing.
 
 
 [0]: http://agu-fm12.abstractcentral.com/planner.jsp
