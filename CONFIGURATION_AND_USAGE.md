@@ -3,7 +3,7 @@ Installation and Configuration
 
 *R package dependencies*
 
-You will need these R packages from CRAN. Install them with the install.packages("<PackageName>") command.
+You will need these R packages from CRAN. Install them with the install.packages(" *PackageName*" ) command.
 
  - *tm* - text mining. There are transitive dependencies such as
   - *rweka* - word stemming
