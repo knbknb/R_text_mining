@@ -14,7 +14,7 @@ You will need these R packages from CRAN. Install them with the install.packages
 
  - To perform word stemming, *tm* package calls external Java code in weka.jar. So a Java JVM must be installed on your machine. 
  - Classpath must be correctly set to enable R to interact with weka.jar. This Classpath value can be machine-dependent. Environment Variables might need to be set.
- Look at the R script code in the "scripts" dir. You might need to change the paths wo weka.jar "config" section, and look at the Sys.setenv() calls.
+ Look at the R script code in the "scripts" dir. You might need to change the paths to weka.jar in the "config" section, and look at the Sys.setenv() calls.
 
 Script Usage
 =========
