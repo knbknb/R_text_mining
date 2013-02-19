@@ -5,7 +5,7 @@ R_text_mining
 
 R project: Build a text-mining corpus from [abstracts][0] of science contributions, 
 presented at the AGU Fall Meeting 2012, San Francisco. 
-This is a big annual conference for Earth scientists, in particular geophysicists and geologists.
+This was a big annual conference for Earth scientists, in particular geophysicists and geologists.
 
 Use R to draw interesting conclusions from a subset of the 23000 abstracts submitted. (These are *not* included with this repository.)
 
