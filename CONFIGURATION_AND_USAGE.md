@@ -1,4 +1,5 @@
-**Installation and Configuration**
+Installation and Configuration
+=========
 
 *R package dependencies*
 
@@ -16,6 +17,13 @@ You will need these R packages from CRAN. Install them with the install.packages
 
 Script Usage
 =========
+
+Run the scripts in the "scripts" directory individually.
+
+    ./import_agu_records.R --help
+
+This creates a corpus stored in an .RData file. Please read the documentation in the "doc" directory of this repo.
+
 
     ./import_agu_records.R --help
     
