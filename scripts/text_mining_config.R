@@ -40,11 +40,11 @@ text_mining_config$show_n_default=3
 text_mining_config$full_datadir = function(){paste0(homedir, datadir)}
 text_mining_config$full_rdatadir = function(){paste0(homedir, Rdatadir)}
 text_mining_config$full_outdir_corpusfiles = function(){paste0(homedir, datadir, outdir2)}
-text_mining_config$full_outfilename = function(pre ,x, suf) {paste0(pre, x, suf)} #components of the data file
+text_mining_config$full_outfilename = function(pre="" ,x="out", suf="") {paste0(pre, x, suf)} #components of the data file
 text_mining_config$full_rdatafile = function(x){paste0(full_rdatadir(), x)} # 
 text_mining_config$full_tdmfile = function(x){x = basename(x); x = sub(paste0('\\.?', file_ext(x), '$'), '', x); paste0(full_rdatadir(), x, tdmfileext)}
 
-# necessary for Statet (R console inside Eclipse) ?
+# necessary for Statet (R console inside Eclipse) <-> RWeka interaction ?
 Sys.setenv(JAVA_HOME="")
 Sys.setenv(CLASSPATH=paste(text_mining_config$wekajar, sep=":"))
 Sys.getenv("CLASSPATH")
