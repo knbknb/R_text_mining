@@ -17,33 +17,10 @@
 # read an Rdata file containing corpus built from AGU FALL MEETING 2012 abstracts, 
 # write it out to an Rdata file
 ####
-homedir="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/"
-datadir="data/abstracts-agu/"
-Rdatadir="data/Rdata/"
-outfileprefix="corpus--"
-outfilename="" # --with-metadata--
-outfileext=".RData"
-select_n = 3  #show n items
-outdir2="_default_outdir"
-wekajar="/usr/local/lib/R/site-library/RWekajars/java/weka.jar"
-procscript="process_term-doc-matrix.R"
-
-wd=getwd()
-
-
-
-full_datadir = function(){paste0(homedir, datadir)}
-full_rdatadir = function(){paste0(homedir, Rdatadir)}
-full_outfilename = function(pre ,x, suf) {paste0(pre, x, suf)} #components of the data file
-full_rdatafile = function(x){paste0(full_rdatadir(), x)} # not a full path
-abspath_rdatafile = function(x){paste0(full_rdatadir(), full_rdatafile(x))} # not a full path
-
-source(paste0(homedir,"scripts/utils_text_mining.R"))
-
-Sys.setenv(JAVA_HOME="")
-Sys.setenv(CLASSPATH=paste(wekajar, sep=":"))
-Sys.getenv("CLASSPATH")
-Sys.setenv(NOAWT=TRUE) # advice from an internet forum, not sure what this does w.r.t weka.jar
+config="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/scripts/text_mining_config.R"
+source(config) # should be absolute path, 
+utils=paste0(text_mining_config$homedir, "scripts/text_mining_utils.R")
+source(utils)
 
 
 library("tm") #text mining
@@ -91,17 +68,17 @@ tmpenv <- new.env()
 override=opts$options$override
 infile = opts$options$infile
 
-outfile=full_outfilename(outfileprefix, opts$options$outfile, outfileext);
+outfile=text_mining_config$full_outfilename(text_mining_config$outfileprefix, opts$options$outfile, text_mining_config$outfileext);
 show_n = opts$options$show_n  #show n items
-if(file.exists(abspath_rdatafile(outfile)) && !override){
-	warning('A file already exists at "',abspath_rdatafile(outfile),'", quitting\n')
+if(file.exists(text_mining_config$full_rdatafile(outfile)) && !override){
+	warning('A file already exists at "',text_mining_config$full_rdatafile(outfile),'", quitting\n')
 	quit()
 }
 
 
 if(!file.exists(infile)){
 	if(!file.exists(infile)){
-		infile = paste0(full_rdatadir(), infile)
+		infile = paste0(text_mining_config$full_rdatadir(), infile)
 		print_help(parser)
 	} else {
 		print(paste0("Loading '", infile, "' ..."))
@@ -121,8 +98,9 @@ infile = basename(infile)
 #tdm <- TermDocumentMatrix(corpus, control = list(tokenize = BigramTokenizer))
 #tdm = DocumentTermMatrix(corpus, control=list(tokenize= "NGramTokenizer"))
 tdm = TermDocumentMatrix(corpus)
-paste0("Writing tdm and corpus to another .Rdata file '", outfile, "', outdir = ", full_rdatadir())
+Terms(tdm)
+paste0("Writing tdm and corpus to another .Rdata file '", outfile, "', outdir = ", text_mining_config$full_rdatadir())
 
-save.image(file=full_rdatafile(outfile))
+#save.image(file=full_rdatafile(outfile))
 print(paste0("You can load the .RData file into an R session and experiment with it, interactively."))
-print(paste0("load('", full_rdatafile(outfile), "')"))
+print(paste0("load('", text_mining_config$full_rdatafile(outfile), "')"))

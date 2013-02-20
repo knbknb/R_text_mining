@@ -13,7 +13,7 @@ print(getwd())
 
 config="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/scripts/text_mining_config.R"
 source(config) # should be absolute path, 
-utils="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/scripts/text_mining_utils.R"
+utils=paste0(text_mining_config$homedir, "scripts/text_mining_utils.R")
 source(utils)
 
 

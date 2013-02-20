@@ -16,6 +16,8 @@
 text_mining_config = new.env()
 library(tools)
 
+
+
 #### 
 #### config
 #### 
@@ -41,6 +43,12 @@ text_mining_config$full_outdir_corpusfiles = function(){paste0(homedir, datadir,
 text_mining_config$full_outfilename = function(pre ,x, suf) {paste0(pre, x, suf)} #components of the data file
 text_mining_config$full_rdatafile = function(x){paste0(full_rdatadir(), x)} # 
 text_mining_config$full_tdmfile = function(x){x = basename(x); x = sub(paste0('\\.?', file_ext(x), '$'), '', x); paste0(full_rdatadir(), x, tdmfileext)}
+
+# necessary for Statet (R console inside Eclipse) ?
+Sys.setenv(JAVA_HOME="")
+Sys.setenv(CLASSPATH=paste(text_mining_config$wekajar, sep=":"))
+Sys.getenv("CLASSPATH")
+Sys.setenv(NOAWT=TRUE) # advice from an internet forum, not sure what this does w.r.t weka.jar
 
 
 
