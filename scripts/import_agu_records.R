@@ -76,11 +76,10 @@ gentdm = opts$options$termdocmatrix
 override=opts$options$override
 infile = opts$options$infile
 show_n = opts$options$show_n  #show n items
-outdir2 = opts$options$outdir
+#outdir = opts$options$outdir
 
 
 outfile = text_mining_config$full_outfilename(text_mining_config$outfileprefix, opts$options$outfile, text_mining_config$outfileext)
-
 print(outfile)
 
 
@@ -191,6 +190,7 @@ print("Stemming... (and removing stopwords, 2nd pass)")
 corpus <- tm_map(corpus, function(x){stemDocument(x, language = "english")} )
 corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
 
+#corpus <- tm_map(corpus, function(x){ text_mining_util$cleanup(x)})
 
 show(corpus)
 #print("Cleaning up punctuation around words..., again")
