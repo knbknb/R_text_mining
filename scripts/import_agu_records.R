@@ -9,46 +9,23 @@
 # Build a corpus from AGU FALL MEETING 2012 abstracts, write it out to an Rdata file
 ###############################################################################
 
+print(getwd())
 
-#### 
-#### config
-#### 
-homedir="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/"
-datadir="data/abstracts-agu/"
-Rdatadir="data/Rdata/"
-outfileprefix="corpus--"
-outfilename="" # --with-metadata--
-outfileext=".RData"
-urlprefix="http://fallmeeting.agu.org/2012/eposters/eposter/"
-wekajar="/usr/local/lib/R/site-library/RWekajars/java/weka.jar"
-outdir2="_default_outdir"
-procscript="process_corpus.R"
-max_length=50 # constrain verbosity
-wd=getwd()
-show_n_default=3
-####
-full_datadir = function(){paste0(homedir, datadir)}
-full_rdatadir = function(){paste0(homedir, Rdatadir)}
-full_outdir_corpusfiles = function(){paste0(homedir, datadir, outdir2)}
-full_outfilename = function(pre ,x, suf) {paste0(pre, x, suf)} #components of the data file
-full_rdatafile = function(x){paste0(full_rdatadir(), x)} # not a full path
-abspath_rdatafile = function(x){paste0(full_rdatadir(), full_rdatafile(x))} # not a full path
+config="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/scripts/text_mining_config.R"
+source(config) # should be absolute path, 
+utils="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/scripts/utils_text_mining.R"
+source(utils)
 
-source(paste0(homedir,"scripts/utils_text_mining.R"))
-
-
-#Sys.setenv(CLASSPATH=paste(Sys.getenv("CLASSPATH"),wekajar, sep=":"))
-Sys.setenv(JAVA_HOME="")
-Sys.setenv(CLASSPATH=paste(wekajar, sep=":"))
-Sys.getenv("CLASSPATH")
-Sys.setenv(NOAWT=TRUE) # advice from an internet forum, not sure what this does w.r.t weka.jar
 
 library("RWeka")  # stemming and tokenization, called by tm
 library("tm") #text mining
 library("optparse")
 library("tools") # Utilities for listing files, and manipulating file paths.
 
-#options must be -s single-letter or --longer-string. -dd double letters don't work 
+
+of=text_mining_config$full_outfilename(text_mining_config$outfileprefix, text_mining_config$outfilename, text_mining_config$outfileext)
+
+#options must be -s single-letter or --longer-string. -dd double letters don't work
 option_list <- list(
 		make_option(c("-i", "--infile"), type="character", 
 				default="abstracts.csv", dest="infile",
@@ -58,17 +35,20 @@ option_list <- list(
 				default=FALSE, dest="override",
 				help="Overwrite pre-existing .RData file "),
 		make_option(c("-d", "--outdir"), type="character", 
-				default=outdir2, dest="outdir",
+				default=text_mining_config$outdir2, dest="outdir",
 				help= paste0("Outdir, must be a subdir name such as 'volcanology' ")),
 		make_option(c("-f", "--outfile"), type="character", 
-				default=full_outfilename(outfileprefix, outfilename, outfileext), dest="outfile",
-				help= paste0("Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)")),		
+				default=of, dest="outfile",
+				help= paste0("Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)")),
+		make_option(c("-n", "--show_n"), 
+				type="integer", default=text_mining_config$show_n_default, dest="show_n",
+				help=paste0("Show this many records in full. [default = ", text_mining_config$show_n_default, "]")),
+		make_option(c("-t", "--termdocmatrix"), 
+				action="store_true", default=FALSE, dest="termdocmatrix",
+				help="Also generate a term-document-matrix from corpus. [default=FALSE]"),
 		make_option(c("-v", "--verbose"), 
 				action="store_true", default=FALSE,
 				help="Print (a lot of) extra output [default=false]"),
-		make_option(c("-n", "--show_n"), 
-				type="integer", default=show_n_default, dest="show_n",
-				help=paste0("Show this many records in full. [default = ", show_n_default, "]")),
 		make_option(c("-q", "--quietly"), 
 				action="store_false", default=TRUE,
 				dest="verbose", help="Print little output"))
@@ -76,27 +56,36 @@ option_list <- list(
 parser <- OptionParser(usage = "%prog [options] file", option_list=option_list,
 		add_help_option = TRUE,
 		prog = NULL,
-		description = "", epilogue = paste0("Infile must be .csv file with AGU abstracts 
-exported from http://agu-fm12.abstractcentral.com.
-Filename can be absolute path or relative path.
-If relative path, then infile will be loaded from
-'", full_datadir(), "'
- "))
+		description = "", epilogue = paste0("-i Infile must be .csv file with AGU abstracts 
+   exported from http://agu-fm12.abstractcentral.com.
+-f Filename can be absolute path or relative path.
+   If relative path, then infile will be loaded from directory
+   '",text_mining_config$full_datadir(), "'.
+-t If you specify the '-t' option, a term-document matrix will also be generated from the corpus 
+and saved in  
+'", text_mining_config$full_rdatadir(), "'.
+"))
+
 #outputs options parsed
 opts = parse_args(parser, args = commandArgs(),
 		positional_arguments = TRUE)
 
 
-tmpenv <- new.env()
 
+gentdm = opts$options$termdocmatrix
 override=opts$options$override
 infile = opts$options$infile
-outdir2 = opts$options$outdir
-outfile=full_outfilename(outfileprefix, opts$options$outfile, outfileext);
 show_n = opts$options$show_n  #show n items
+outdir2 = opts$options$outdir
 
-if(file.exists(abspath_rdatafile(outfile)) && !override){
-	warning('A file already exists at "',abspath_rdatafile(outfile),'", quitting\n')
+
+outfile = text_mining_config$full_outfilename(text_mining_config$outfileprefix, opts$options$outfile, text_mining_config$outfileext)
+
+print(outfile)
+
+
+if(file.exists(full_rdatafile(outfile)) && !override){
+	warning('A file already exists at "',text_mining_config$full_rdatafile(outfile),'", quitting\n')
 	quit()
 }
 
@@ -143,14 +132,18 @@ stopifnot(length(bodies) > 0)
 corpus <- Corpus(VectorSource(words))
 class(corpus)
 
+
+
 print("Appending collection-level metadata to Corpus...")
 meta(corpus, type="corpus", "opts") =opts
 meta(corpus, type="corpus", "infile") =infile
-meta(corpus, type="corpus", "rdata") = abspath_rdatafile(outfile)
+meta(corpus, type="corpus", "rdata") = text_mining_config$full_rdatafile(outfile)
 
 corpus <- tm_map(corpus, stripWhitespace)
 #remove empty docs
 corpus <- corpus[grep("\\S+", corpus, invert=FALSE, perl=TRUE)]
+
+
 
 #preprocessing
 #'arg' should be one of 
@@ -210,19 +203,30 @@ tm::inspect(head(corpus, n=show_n))
 # Just open small text file that remains from each document. 
 fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
 fn = text_mining_util$trim(fn)
-system(paste0("mkdir -p ", full_outdir_corpusfiles()))
+system(paste0("mkdir -p ", text_mining_config$full_outdir_corpusfiles()))
 
-paste0("Writing corpus to files '", fn, "', outdir = ", full_outdir_corpusfiles())
-writeCorpus(corpus, full_outdir_corpusfiles(), filenames=fn )
+#paste0("Writing corpus to files '", fn, "', outdir = ", text_mining_config$full_outdir_corpusfiles())
+#writeCorpus(corpus, text_mining_config$full_outdir_corpusfiles(), filenames=fn )
 
 
 paste0("Writing corpus to .Rdata file '", outfile, "', outdir = ", full_rdatadir())
-save.image(file=full_rdatafile(outfile))
+save.image(file=text_mining_config$full_rdatafile(outfile))
 print(paste0("You can load the .RData file into an R session and experiment with it, interactively."))
-print(paste0("load('", full_rdatafile(outfile), "')"))
-print(paste0("But you can also create a Term-Document-Matrix by executing "))
-print(paste0(procscript, " --infile ", full_rdatafile(outfile)))
+print(paste0("load('", text_mining_config$full_rdatafile(outfile), "')"))
+print(paste0("... done with saving corpus to file."))
+if(gentdm == TRUE){
+	infile = basename(infile)
+	tdm = tm::TermDocumentMatrix(corpus)
+	print(paste0("Writing TDM (and corpus) to another .Rdata file, outdir = ", text_mining_config$full_rdatadir()))
+	print(paste0("Saving away Term-Document-Matrix to ..."))
+	print(paste0(text_mining_config$full_tdmfile(outfile)))
+	save.image(file=text_mining_config$full_tdmfile(outfile))
+	print(paste0("... done with saving Term-Document-Matrix to file."))
+	
+}
 
+print(paste0("(Optional) You can also create a ***customized*** Term-Document-Matrix by executing "))
+print(paste0(procscript, " --infile ", text_mining_config$full_rdatafile(outfile)))
 
 
 #remove local .RData file in case the script was called with Rscript --save. 
