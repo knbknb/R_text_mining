@@ -1,6 +1,9 @@
 #!/usr/bin/Rscript
 ###############################################################################
 #
+# create a term-document matrix from a corpus. The tdm can be parameterized by 
+# specifying an "--algorithm" command line option that 
+# 
 # This is an R script designed to be called from the command line.
 # Do not change or edit this file.
 # This script creates an .Rdata file as output. 
@@ -22,11 +25,17 @@ source(config) # should be absolute path,
 utils=paste0(text_mining_config$homedir, "scripts/text_mining_utils.R")
 source(utils)
 
+print(getwd())
+
 
 library("tm") #text mining
 library("optparse")
+library("RWeka") #for tokenizers
 library("tools") # Utilities for listing files, and manipulating file paths.
 
+
+
+of=text_mining_config$full_outfilename(text_mining_config$outfilename)
 
 option_list <- list(
 		make_option(c("-i", "--infile"), type="character", 
@@ -37,28 +46,36 @@ option_list <- list(
 				default=FALSE, dest="override",
 				help="Overwrite pre-existing .RData file "),
 		make_option(c("-f", "--outfile"), type="character", 
-				default=full_outfilename(outfileprefix, outfilename, outfileext), dest="outfile",
+				default=of, dest="outfile",
 				help= paste0("Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)")),
 		make_option(c("-v", "--verbose"), 
 				action="store_true", default=FALSE,
 				help="Print (a lot of) extra output [default=false]"),
+		make_option(c("-r", "--removesparse"),
+				default=TRUE,
+				dest="removesparse", help="Remove sparse terms from the term document matrix"),
+		make_option(c("-s", "--nmin"), type="integer",
+				default=2,
+				dest="nmin", help="Minimum number of words in a phrase"),
+		make_option(c("-e", "--nmax"), type="integer",
+				default=10,
+				dest="nmax", help="Maximum number of words in a phrase"),
 		make_option(c("-q", "--quietly"), 
-				action="store_false", default=TRUE,
-				dest="verbose", help="Print little output"))
-#),
-#		make_option(c("-a", "--algorithm"), 
-#				default="", type="string", dest="algorithm",
-#				help="Algorithm to use to create the TDM"))
-		
+				default=TRUE,
+				dest="verbose", help="Print little output"),
+		make_option(c("-a", "--algorithm"), 
+				default="", type="character", dest="algorithm",
+				help="Tokenizing Algorithm to use to create the TDM. Can be \"\", bigram, ngram, sentdetect"));
+
+#make_option(c("-e", "--extra-args"), 
+#		default="", type="string", dest="algorithm",
+#		help="Pass addtional options to the tokenizer"))
+
 parser <- OptionParser(usage = "%prog [options] file", option_list=option_list,
         add_help_option = TRUE,
 		prog = NULL,
 		description = "", 
-		epilogue = paste0("Option ''  
-			
-			
-			
-			'"))
+		epilogue = paste0("Options... "))
 #outputs options parsed
 opts = parse_args(parser, args = commandArgs(),
 		positional_arguments = TRUE)
@@ -67,8 +84,14 @@ tmpenv <- new.env()
 
 override=opts$options$override
 infile = opts$options$infile
+algo = opts$options$algorithm
+nmin = opts$options$nmin
+nmax = opts$options$nmax
+removesparse = opts$options$removesparse
 
-outfile=text_mining_config$full_outfilename(text_mining_config$outfileprefix, opts$options$outfile, text_mining_config$outfileext);
+outfile = text_mining_config$full_outfilename(opts$options$outfile)
+print(infile)
+
 show_n = opts$options$show_n  #show n items
 if(file.exists(text_mining_config$full_rdatafile(outfile)) && !override){
 	warning('A file already exists at "',text_mining_config$full_rdatafile(outfile),'", quitting\n')
@@ -91,16 +114,33 @@ if(!file.exists(infile)){
  
 load(infile, envir=tmpenv)
 corpus <- tmpenv$corpus
+
 show(corpus)
 infile = basename(infile)
+
 # do not use when stopwords are removed?
-#BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 4))
-#tdm <- TermDocumentMatrix(corpus, control = list(tokenize = BigramTokenizer))
-#tdm = DocumentTermMatrix(corpus, control=list(tokenize= "NGramTokenizer"))
-tdm = TermDocumentMatrix(corpus)
+if (algo == "bigram") {
+  BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
+  tdm <- TermDocumentMatrix(corpus, control = list(tokenize = BigramTokenizer))
+} else if (algo == "ngram"){
+	NgramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = nmin, max = nmax))
+    tdm = DocumentTermMatrix(corpus, control=list(tokenize= NgramTokenizer))
+} else {
+	#use tm's defaults
+    tdm = TermDocumentMatrix(corpus)
+}
+
+
+
+if(removesparse == TRUE){
+	tdm = removeSparseTerms(tdm, 0.8)
+}
 Terms(tdm)
 paste0("Writing tdm and corpus to another .Rdata file '", outfile, "', outdir = ", text_mining_config$full_rdatadir())
 
-#save.image(file=full_rdatafile(outfile))
+print(paste0("Saving away Term-Document-Matrix to ..."))
+print(paste0(text_mining_config$full_tdmfile(outfile)))
+save.image(file=text_mining_config$full_tdmfile(outfile))
+print(paste0("... done with saving Term-Document-Matrix to file."))
 print(paste0("You can load the .RData file into an R session and experiment with it, interactively."))
-print(paste0("load('", text_mining_config$full_rdatafile(outfile), "')"))
+print(paste0("load('", text_mining_config$full_tdmfile(outfile), "')"))
