@@ -230,7 +230,7 @@ print(paste0(procscript, " --infile ", text_mining_config$full_rdatafile(outfile
 
 
 #remove local .RData file in case the script was called with Rscript --save. 
-# We just  have saved away everything. 
+# We just  have saved away everything, no need to save it again in the working dir. 
 tryCatch(
 		unlink(".RData"),
 		error=function(e) {
