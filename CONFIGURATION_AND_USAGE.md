@@ -40,28 +40,30 @@ Script Command Line Options Overview
 =========
 
 
-    ./import_agu_records.R --help
-    
-    [1] "/usr/local/lib/R/site-library/RWekajars/java/weka.jar"
-    Loading required package: methods
     Usage: ./import_agu_records.R [options] file
     
     
     Options:
-      -i INFILE, --infile=INFILE
-      	Infile, must be a CSV file and end in .csv
+     -i INFILE, --infile=INFILE
+    		Infile, must be a CSV file and end in .csv
     
-    	-ov, --override
+    	-x, --override
     		Overwrite pre-existing .RData file 
     
-    	-od OUTDIR, --outdir=OUTDIR
+    	-d OUTDIR, --outdir=OUTDIR
     		Outdir, must be a subdir name such as 'volcanology' 
     
-    	-of OUTFILE, --outfile=OUTFILE
+    	-f OUTFILE, --outfile=OUTFILE
     		Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)
     
+    	-n SHOW_N, --show_n=SHOW_N
+    		Show this many records in full. [default = 3]
+    
+    	-t, --termdocmatrix
+    		Also generate a term-document-matrix from corpus. [default=FALSE]
+    
     	-v, --verbose
-    		Print extra output [default]
+    		Print (a lot of) extra output [default=false]
     
     	-q, --quietly
     		Print little output
@@ -69,33 +71,49 @@ Script Command Line Options Overview
     	-h, --help
     		Show this help message and exit
     
-    Infile must be .csv file with AGU abstracts 
-    exported from http://agu-fm12.abstractcentral.com.
-    Filename can be absolute path or relative path.
-    If relative path, then infile will be loaded from
-    '.../R_text_mining/data/abstracts-agu/'
+    -i Infile must be .csv file with AGU abstracts 
+       exported from http://agu-fm12.abstractcentral.com.
+    -f Filename can be absolute path or relative path.
+       If relative path, then infile will be loaded from directory
+       '..../abstracts-agu/'.
+    -t If you specify the '-t' option, a term-document matrix will also be generated from the corpus 
+    and saved in  
+    '.../data/Rdata/'.
+    
 
-
-
-
-    ./process_corpus.R --help
     
 Output:    
     
-    Loading required package: methods
     Usage: ./process_corpus.R [options] file
-    
+
     
     Options:
      -i INFILE, --infile=INFILE
     		Infile (must be .Rdata file with tm text corpus stored in variable 'corpus'
     
-    	-v, --verbose
-    		Print extra output [default]
+    	-x, --override
+    		Overwrite pre-existing .RData file 
     
-    	-q, --quietly
+    	-f OUTFILE, --outfile=OUTFILE
+    		Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)
+    
+    	-v, --verbose
+    		Print (a lot of) extra output [default=false]
+    
+    	-r REMOVESPARSE, --removesparse=REMOVESPARSE
+    		Remove sparse terms from the term document matrix
+    
+    	-s NMIN, --nmin=NMIN
+    		Minimum number of words in a phrase
+    
+    	-e NMAX, --nmax=NMAX
+    		Maximum number of words in a phrase
+    
+    	-q QUIETLY, --quietly=QUIETLY
     		Print little output
+    
+    	-a ALGORITHM, --algorithm=ALGORITHM
+    		Tokenizing Algorithm to use to create the TDM. Can be "", bigram, ngram, sentdetect
     
     	-h, --help
     		Show this help message and exit
-
