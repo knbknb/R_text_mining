@@ -75,10 +75,10 @@ Script Command Line Options Overview
        exported from http://agu-fm12.abstractcentral.com.
     -f Filename can be absolute path or relative path.
        If relative path, then infile will be loaded from directory
-       '..../abstracts-agu/'.
+       '..../abstracts-agu/'. (default: see config.R file)
     -t If you specify the '-t' option, a term-document matrix will also be generated from the corpus 
     and saved in  
-    '.../data/Rdata/'.
+    '.../data/Rdata/'. (default: see config.R file)
     
 
     
