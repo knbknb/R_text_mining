@@ -6,9 +6,10 @@ Installation and Configuration
 You will need these R packages from CRAN. Install them with the install.packages(" *PackageName*" ) command.
 
  - *tm* - text mining. There are transitive dependencies such as
-  - *rweka* - word stemming
- - *optparse* - parse command line options
+ - *rweka* - word stemming.
+ - *optparse* - parse command line options.
  - *tools* -  Filename manipulation. Might be a core package.
+ - *wordcloud* - Create a wordcloud from text, save it to a png file.
 
 *R Package configuration - issues*
 
