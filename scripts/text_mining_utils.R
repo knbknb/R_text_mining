@@ -37,8 +37,8 @@ text_mining_util$rmPunc =  function(x){
 	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”:±</>]{3})([[:alnum:]])',"\\2", x, perl=TRUE) ;
 	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”:±</>]{2})([[:alnum:]])',"\\2", x, perl=TRUE) ;
 	x <- gsub('(.*?)(?<=^[[:space:][:punct:]’“”:±</>])([[:alnum:]])',"\\2", x, perl=TRUE) ; 
-	# lookbehind there must be a word char to the left and punct/whitespace stuff to the end.
-	# append 1 extra blank 
+	# lookbehind: there must be a word char to the left and punct/whitespace stuff to the end.
+	# Then append 1 extra blank 
 	x <- gsub('(.*?)(?<=[[:alnum:]])([[:space:][:punct:]’“”:±</>\\\\]+?)$',"\\1", x, perl=TRUE)
 	
 	# remove all strings that consist *only* of punct chars 
@@ -47,8 +47,12 @@ text_mining_util$rmPunc =  function(x){
 	
 }
 
-#create a wordcloud. input a data frame with columns "word" and "freq"
-# a filename 
+#create a wordcloud. 
+# input params:
+#  - df: a data frame with columns "word" and "freq"
+#  - fn: a filename 
+#  - minfreq: minimum frequency with which a word must occur inside the text
+#  - maxfreq: maximum frequency with which a word must occur inside the text
 text_mining_util$create_wordcloud_png = function(df, fn="wordcloud.png", minfreq=2, maxfreq=Inf){
 	png(filename, width=1280,height=800)
 	#wordcloud(df$word,df$freq,c(8,.3),2,100,TRUE,.15, pal,vfont=c("sans serif","plain"))
