@@ -1,6 +1,6 @@
 # utils_text_mining.R:
 # Utilities for text mining AGU Fall meeting abstracts.
-# 
+# useful in conjunction with, but does not depend on packages: tm 
 
 
 ########################################
@@ -44,28 +44,6 @@ text_mining_util$rmPunc =  function(x){
 	# remove all strings that consist *only* of punct chars 
 	x <- gsub('^[[:space:][:punct:]’“”:±</>\\\\]+$',"", x, perl=TRUE) ;
 	x
-	
-}
-
-#create a wordcloud. 
-# input params:
-#  - df: a data frame with columns "word" and "freq"
-#  - fn: a filename 
-#  - minfreq: minimum frequency with which a word must occur inside the text
-#  - maxfreq: maximum frequency with which a word must occur inside the text
-text_mining_util$create_wordcloud_png = function(df, fn="wordcloud.png", minfreq=2, maxfreq=Inf){
-	png(filename, width=1280,height=800)
-	#wordcloud(df$word,df$freq,c(8,.3),2,100,TRUE,.15, pal,vfont=c("sans serif","plain"))
-	wordcloud(df$word,df$freq,scale=c(8,.3),min.freq=2,max.words=Inf,random.order=TRUE,rot.per=.15,colors=pal,vfont=c("sans serif","plain"))
-	dev.off()
-}
-
-# create many png files
-text_mining_util$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, maxfreq=Inf, seq=c(10,20,30,40,50, 100, 200)){
-	
-	lapply(seq, function(x){
-				text_mining_util$create_wordclouds_png(df, fn=paste0("wordcloud-", x, ".png"), minfreq=minfreq, maxfreq=maxfreq)
-			})
 	
 }
 
