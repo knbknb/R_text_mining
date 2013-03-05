@@ -40,6 +40,7 @@ Please read the documentation in the ["doc"](doc) directory of this repo for an 
 Script Command Line Options Overview
 =========
 
+**import_agu_records.R**
 
     Usage: ./import_agu_records.R [options] file
     
@@ -83,7 +84,7 @@ Script Command Line Options Overview
     
 
     
-Output:    
+**process_corpus.R**:    
     
     Usage: ./process_corpus.R [options] file
 
