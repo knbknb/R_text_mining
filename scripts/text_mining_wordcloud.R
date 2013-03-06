@@ -33,7 +33,8 @@ text_mining_wordcloud$create_wordcloud_png = function(df, fn="wordcloud.png", mi
 	par(mar=rep(0, 4)) # margin in lines of text
 	plot.new()
 	text(x=0.5, y=0.5, title)
-	wordcloud(df$word,df$freq,scale=c(5,.3),min.freq=minfreq,max.words=maxwords,random.order=FALSE,rot.per=.15,colors=pal,vfont=c("sans serif","plain"))
+	# if there are warnings, not all values can be plotted. Change scale= Argument, reduce first item
+	wordcloud(df$word,df$freq,scale=c(5,.3), min.freq=minfreq, max.words=maxwords, random.order=FALSE, rot.per=.15, colors=pal, vfont=c("sans serif","plain"))
 	dev.off()
 	#dev.next()
 	
@@ -42,20 +43,18 @@ text_mining_wordcloud$create_wordcloud_png = function(df, fn="wordcloud.png", mi
 # create many png files from the most common 10,20,30,40 words in document
 text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, maxwords=Inf, seq=c(10, 20,30,40,50, 100), title=""){
 	
-	#lapply(seq, function(x){
 	for (x in seq){
-				x1 = sprintf("%04d", x)
-				fnx = paste0(fn, "-", x1, ".png");
-				titlex = paste0("Most common ", x, " words of '", title, "'")
-				#titlex = paste0("Top ", x, "% words of ", title)
-				png(fn, width=1280,height=800,  res=130)
-				maxwx = x
-				minfx = minfreq
-				print(paste0("Maxwords = ", x, "; Creating wordcloud file '", fnx, "'"))
-				text_mining_wordcloud$create_wordcloud_png(df, fn=fnx, minfreq=minfx, maxwords=maxwx, title=titlex)
-				
+		x1 = sprintf("%04d", x)
+		fnx = paste0(fn, "-", x1, ".png");
+		titlex = paste0("Most common ", x, " words of '", title, "'")
+		#titlex = paste0("Top ", x, "% words of ", title)
+		png(fn, width=1280,height=800,  res=130)
+		maxwx = x
+		minfx = minfreq
+		print(paste0("Maxwords = ", x, "; Creating wordcloud file '", fnx, "'"))
+		text_mining_wordcloud$create_wordcloud_png(df, fn=fnx, minfreq=minfx, maxwords=maxwx, title=titlex)
 	}
-	#		})
+	
 }
 
 while("text_mining_wordcloud" %in% search())
