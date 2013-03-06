@@ -1,6 +1,8 @@
 ########################################
 ## Put everything into an environment, to not pollute global namespace
 library("wordcloud")
+library("RColorBrewer")
+#library("Cairo")
 
 text_mining_wordcloud = new.env()
 
@@ -11,27 +13,49 @@ text_mining_wordcloud = new.env()
 #  - df: a data frame with columns "word" and "freq"
 #  - fn: a filename 
 #  - minfreq: minimum frequency with which a word must occur inside the text
-#  - maxfreq: maximum frequency with which a word must occur inside the text
+#  - maxwords: maximum number of words that will appear in wordcloud
 text_mining_wordcloud$create_wordcloud_png = function(df, fn="wordcloud.png", minfreq=2, maxwords=Inf, title=""){
-	png(filename, width=1280,height=800)
-	#wordcloud(df$word,df$freq,c(8,.3),2,100,TRUE,.15, pal,vfont=c("sans serif","plain"))
+	#pal <- brewer.pal(9, "BuGn")
+	pal <- brewer.pal(8,"Dark2")
+    #pal <- pal[-(1:2)]
+	#getOption("device")
+
+	#sink(fn)
+	#options(device="png")
+	#dev.new(which=dev.cur())
+	
+	png(fn, width=1280,height=800,  res=130)
+	
+	#dev.new()
+	#dev.list()
+	
 	layout(matrix(c(1, 2), nrow=2), heights=c(1, 4))
-	par(mar=rep(0, 4))
+	par(mar=rep(0, 4)) # margin in lines of text
 	plot.new()
 	text(x=0.5, y=0.5, title)
-	wordcloud(df$word,df$freq,scale=c(9,.3),min.freq=minfreq,max.words=maxwords,random.order=FALSE,rot.per=.15,colors=pal,vfont=c("sans serif","plain"))
+	wordcloud(df$word,df$freq,scale=c(5,.3),min.freq=minfreq,max.words=maxwords,random.order=FALSE,rot.per=.15,colors=pal,vfont=c("sans serif","plain"))
 	dev.off()
+	#dev.next()
+	
 }
 
-# create many png files from the top 1,2...20 % of words in document
-text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, maxwords=Inf, seq=c(1, 2,3,4,5, 10, 20), title=""){
+# create many png files from the most common 10,20,30,40 words in document
+text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, maxwords=Inf, seq=c(10, 20,30,40,50, 100), title=""){
 	
-	lapply(seq, function(x){
+	#lapply(seq, function(x){
+	for (x in seq){
 				x1 = sprintf("%04d", x)
-				text_mining_wordcloud$create_wordclouds_png(df, fn=paste0("wordcloud-", x1, ".png"), minfreq=minfreq, maxwords=maxwords, title=title)
+				fnx = paste0(fn, "-", x1, ".png");
+				titlex = paste0("Most common ", x, " words of '", title, "'")
+				#titlex = paste0("Top ", x, "% words of ", title)
+				png(fn, width=1280,height=800,  res=130)
+				maxwx = x
+				minfx = minfreq
+				print(paste0("Maxwords = ", x, "; Creating wordcloud file '", fnx, "'"))
+				text_mining_wordcloud$create_wordcloud_png(df, fn=fnx, minfreq=minfx, maxwords=maxwx, title=titlex)
 				
-			})
-	
+	}
+	#		})
 }
 
 while("text_mining_wordcloud" %in% search())
