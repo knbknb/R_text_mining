@@ -24,7 +24,7 @@ text_mining_wordcloud$create_wordcloud_png = function(df, fn="wordcloud.png", mi
 	#options(device="png")
 	#dev.new(which=dev.cur())
 	
-	png(fn, width=1280,height=800,  res=130)
+	png(fn, width=1280,height=1000,  res=180)
 	
 	#dev.new()
 	#dev.list()
@@ -47,7 +47,7 @@ text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, 
 	for (x in seq){
 		x1 = sprintf("%04d", x)
 		fnx = paste0(fn, "-", x1, ".png");
-		titlex = paste0("Most common ", x, " words of '", title, "'")
+		titlex = paste0("Most common ", x, " words/phrases of '", title, "'")
 		#titlex = paste0("Top ", x, "% words of ", title)
 		png(fn, width=1280,height=800,  res=130)
 		maxwx = x

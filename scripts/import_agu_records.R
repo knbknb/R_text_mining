@@ -88,7 +88,7 @@ if(file.exists(full_rdatafile(outfile)) && !override){
 	quit()
 }
 
-if (! file_ext(infile) == ".csv"){
+if (! file_ext(infile) == "csv"){
 	print_help(parser)
 }
 if(!file.exists(infile)){
