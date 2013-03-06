@@ -14,7 +14,7 @@ text_mining_wordcloud = new.env()
 #  - fn: a filename 
 #  - minfreq: minimum frequency with which a word must occur inside the text
 #  - maxwords: maximum number of words that will appear in wordcloud
-text_mining_wordcloud$create_wordcloud_png = function(df, fn="wordcloud.png", minfreq=2, maxwords=Inf, title=""){
+text_mining_wordcloud$create_wordcloud_png = function(df, fn="wordcloud.png", minfreq=2, maxwords=Inf, title="", lettersize=2){
 	#pal <- brewer.pal(9, "BuGn")
 	pal <- brewer.pal(8,"Dark2")
     #pal <- pal[-(1:2)]
@@ -33,15 +33,16 @@ text_mining_wordcloud$create_wordcloud_png = function(df, fn="wordcloud.png", mi
 	par(mar=rep(0, 4)) # margin in lines of text
 	plot.new()
 	text(x=0.5, y=0.5, title)
-	# if there are warnings, not all values can be plotted. Change scale= Argument, reduce first item
-	wordcloud(df$word,df$freq,scale=c(5,.3), min.freq=minfreq, max.words=maxwords, random.order=FALSE, rot.per=.15, colors=pal, vfont=c("sans serif","plain"))
+	lsz=lettersize
+	# if there are warnings, not all words fot on canvas and thus cannot be plotted. Change scale= Argument, reduce first item
+	wordcloud(df$word,df$freq,scale=c(lsz,.3), min.freq=minfreq, max.words=maxwords, random.order=FALSE, rot.per=.15, colors=pal, vfont=c("sans serif","plain"))
 	dev.off()
 	#dev.next()
 	
 }
 
 # create many png files from the most common 10,20,30,40 words in document
-text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, maxwords=Inf, seq=c(10, 20,30,40,50, 100), title=""){
+text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, maxwords=Inf, seq=c(10, 20,30,40,50, 100), title="", lettersize=2){
 	
 	for (x in seq){
 		x1 = sprintf("%04d", x)
@@ -52,7 +53,8 @@ text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, 
 		maxwx = x
 		minfx = minfreq
 		print(paste0("Maxwords = ", x, "; Creating wordcloud file '", fnx, "'"))
-		text_mining_wordcloud$create_wordcloud_png(df, fn=fnx, minfreq=minfx, maxwords=maxwx, title=titlex)
+		lsz=lettersize
+		text_mining_wordcloud$create_wordcloud_png(df, fn=fnx, minfreq=minfx, maxwords=maxwx, title=titlex, lettersize=lsz)
 	}
 	
 }
