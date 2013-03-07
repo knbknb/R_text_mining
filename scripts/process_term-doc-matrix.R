@@ -34,8 +34,14 @@ option_list <- list(
 		make_option(c("-t", "--top_n_percent"), 
 				default="1", type="integer", dest="top_n_percent",
 				help=""),
+		make_option(c("-w", "--numwords_min"), 
+				default="1", type="integer", dest="numwords_min",
+				help="Min number of words per phrase in wordcloud. [DEFAULT = 1]"),
+		make_option(c("-x", "--numwords_max"), 
+				default="1", type="integer", dest="numwords_max",
+				help="Max number of words per phrase in wordcloud. [DEFAULT = 1; recommended: n <= 2]"),
 		make_option(c("-s", "--sparsity_percent"), 
-				default="0.95", type="integer", dest="sparsity_percent",
+				default="0.95", type="numeric", dest="sparsity_percent",
 				help=""))
 		
 parser <- OptionParser(usage = "%prog [options] file", option_list=option_list,
@@ -54,6 +60,9 @@ tmpenv <- new.env()
 topN_percentage_wanted = opts$options$top_n_percent
 sparsity = opts$options$sparsity_percent
 
+wmin = min(opts$options$numwords_min, opts$options$numwords_max)
+wmax = max(opts$options$numwords_min, opts$options$numwords_max)
+
 infile = opts$options$infile
 if (! file_ext(infile) == ".RData"){
 	print_help(parser)
@@ -69,17 +78,10 @@ load(infile, envir=tmpenv)
 corpus <- tmpenv$corpus
 show(corpus)
 
-wordlength_min = 2
-wordlength_max = 2
-if (max(c(wordlength_min, wordlength_max)) >= 3 ){
-	lsz = 2
-} else if (max(c(wordlength_min, wordlength_max)) >= 2  ){
-	lsz = 3
-} else {
-	lsz = 4
-}
+lsz = text_mining_wordcloud$find_fontsize(wordlength_min = 2, wordlength_max = 2)
+
 # do not use when stopwords are removed?
-BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = wordlength_min, max = wordlength_max))
+BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = wmin, max = wmax))
 tdm <- TermDocumentMatrix(corpus, control = list(tokenize = BigramTokenizer))
 #BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
 #tdm <- TermDocumentMatrix(corpus, control = list(tokenize = BigramTokenizer))
@@ -106,5 +108,5 @@ d <- data.frame(word = names(v),freq=v)
 #wordcloud(d$word,d$freq,scale=c(9,.3),min.freq=4,max.words=Inf,random.order=FALSE,rot.per=.15,colors=pal,vfont=c("sans serif","plain"))
 #dev.off()
 #text_mining_wordcloud$wordclouds_pngs(d, seq=c(0.1,0.5,1,2,5), title=infile)
-text_mining_wordcloud$wordclouds_pngs(d, seq=c(10,20,30,40,50), title=infile, fn=paste0(infile, "-", wordlength_min, "-", wordlength_max ,"-"), lettersize=lsz)
+text_mining_wordcloud$wordclouds_pngs(d, seq=c(10,20,30,40,50), title=infile, fn=paste0(infile, "-", wmin, "-", wmax ,"-"), lettersize=lsz)
 warnings()

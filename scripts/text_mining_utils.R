@@ -15,7 +15,7 @@ text_mining_util = new.env()
 ## 
 text_mining_util$earthsci_stopwords = function(){
 	#return a vector
-	c( "data", "earth", "science", "using" ) # "(..,"
+	c( "data", "earth", "science", "using", "1", "2", "3" ) # "(..,"
 }
 
 

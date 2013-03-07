@@ -59,6 +59,19 @@ text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, 
 	
 }
 
+# find max font sizes to use in wordcloud creating. 
+# when phrase lengths > 1 word, strings tend to get longer, and do not fit on canvas
+text_mining_wordcloud$find_fontsize = function (wordlength_min = 2, wordlength_max = 2){
+	if (max(c(wordlength_min, wordlength_max)) >= 3 ){
+		lsz = 2
+	} else if (max(c(wordlength_min, wordlength_max)) >= 2  ){
+		lsz = 3
+	} else {
+		lsz = 4
+	}
+	lsz
+}
+
 while("text_mining_wordcloud" %in% search())
 	detach("text_mining_wordcloud")
 attach(text_mining_wordcloud)

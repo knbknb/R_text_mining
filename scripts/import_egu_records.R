@@ -109,29 +109,55 @@ if(!file.exists(indir)){
 } else {
 	print(paste0("Loading all pdfs from '", indir, "' ..."))
 }
-
+mapping = list(Content = "Contents", Heading = "Heading", Author = "Author", Language = "Language", ID = "ID", Origin = "Origin",
+Description = "Description", DateTimeStamp = "DateTimeStamp", Title = "Title"
+)
+myReader = readTabular(mapping = mapping)
 #library("wordnet") # dictionaries
 pdfs_parsed= lapply(pdfs, function(x){
-			p = file.path(indir, x)
-			pdfv = readPDF(PdftotextOptions = "-layout")(elem = list(uri = p),language = "en",id=x)
-			#exclude elements 1:7
-			pdfv[-7:-1]
+	p = file.path(indir, x)
+	pdfv = readPDF(PdftotextOptions = "-layout")(elem = list(uri = p),language = "en",id=x)
+	#exclude elements 1:7 - standard EGU copyright header
+	pdfv[-7:-1]
+	
+	end_of_header = min(which(pdfv == "")) - 1
+	#will contain title and authors
+	attr(pdfv, "Description") = paste(pdfv[1:end_of_header], collapse=" ")
+	#str(pdfv)
+	# exclude author information
+	data.frame(Contents = paste(pdfv[(-1 * end_of_header):-1], collapse=" "),
+		 Title =  ifelse(is.character(attr(pdfv, "Title")), attr(pdfv, "Title"), "?"),
+		 Author = ifelse(is.character(attr(pdfv, "Author")), attr(pdfv, "Author"), "?"),
+		 DateTimeStamp = attr(pdfv, "DateTimeStamp"),
+		 Description = attr(pdfv, "Description"),
+		 Heading  = ifelse(is.character(attr(pdfv, "Heading")), attr(pdfv, "Heading"), "?"),
+		 ID  = ifelse(is.character(attr(pdfv, "ID")), attr(pdfv, "ID"), "?"),
+		 Language  = ifelse(is.character(attr(pdfv, "Language")), attr(pdfv, "Language"), "?"),
+		# Language =  attr(pdfv, "Language"),
+		# LocalMetaData = attr(pdfv, "LocalMetaData"),
+		 Origin= attr(pdfv, "Origin"),
+		 stringsAsFactors=FALSE) 
 	})
-
-
-head(pdfs_parsed,n=1)
+#str(pdfs_parsed[[1]])
+#quit()
 stopifnot(length(pdfs_parsed) > 0)
+df = as.data.frame(do.call(rbind, pdfs_parsed))
+str(df)
 
-# exclude elements 1:15 (by specifying indexes -1 to -15)
+corpus <- Corpus(DataframeSource(df), readerControl = list(reader = myReader))
 
-
-corpus <- Corpus(VectorSource(pdfs_parsed))
 class(corpus)
 
 print("Appending collection-level metadata to Corpus...")
 meta(corpus, type="corpus", "opts") =opts
 meta(corpus, type="corpus", "indir") =indir
 meta(corpus, type="corpus", "rdata") = text_mining_config$full_rdatafile(outfile)
+
+if (opts$options$verbose == TRUE){
+	show_n = min(length(corpus), max_length)
+} 
+print("")
+tm::inspect(head(corpus, n=show_n))
 
 corpus <- tm_map(corpus, stripWhitespace)
 #remove empty docs
@@ -150,38 +176,17 @@ print("")
 tm::inspect(head(corpus, n=show_n))
 print("Generating Metadata Records...")
 len=length(corpus)
-#i = 0
-#corpus = tm_map(corpus, function(x){
-#	i <<- i + 1
-##for (i in seq(from= 1, to=len, by=1)){
-#	if(opts$options$verbose == TRUE || i %% 50 == 0){
-#		print(paste(date(), "-", i, "of", len, substr(x, 1, 140), sep = " "))
-#	}
-#	DublinCore(x, "creator") = text_mining_util$rmPunc(csv[[i,14]])      #abstract presenter
-#	DublinCore(x, "title") = csv[[i,10]]  #abstract title => heading
-#	DublinCore(x, "description") = paste(csv[[i,11]] , csv[[i,1]], sep=": ") #session id, session name
-#	DublinCore(x, "source" ) = paste0(urlprefix, csv[[i,11]]) #URL to poster
-#	DublinCore(x, "Publisher" ) = csv[[i,16]]   #institutions
-#	DublinCore(x, "contributor" ) =  gsub('[[:space:]]+'," ", text_mining_util$cleanup(csv[[i,15]], ";") , perl=TRUE) ;  #all authors
-#	x
-#})	
-#
-#print("")
-#print("Finished with generating Metadata records:")
+
 tm::inspect(head(corpus, n=show_n))
 meta(corpus[[show_n]])
 corpus <- tm_map(corpus, tolower)
-#tm::inspect(head(corpus, n=show_n))
 
 
 print("Removing stopwords...")
 corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
-
-
 tm::inspect(head(corpus, n=show_n))
 
 print("Stemming... (and removing stopwords, 2nd pass)")
-
 corpus <- tm_map(corpus, function(x){stemDocument(x, language = "english")} )
 corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
 
