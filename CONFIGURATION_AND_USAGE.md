@@ -24,99 +24,23 @@ Run the scripts in the ["scripts"](scripts) directory individually. Read here *h
 
 Please read the documentation in the ["doc"](doc) directory of this repo for an explanation of  *what* the scripts are doing.
 
-**import_agu_records.R** creates a corpus stored in an .RData file.
+**import_agu_records.R** creates a corpus from AGU Fall Meeting 2012 abstracts, store it in an .RData file located in new subdir
+    cleaned-up (whitespace, punctuation, removed, words stemmed) will get stored in new subdir seismology-and-deep-earth
 
     ./import_agu_records.R --infile itinerary-seismology.csv  --outdir seismology-and-deep-earth
  
+**import_egu_records.R** creates a corpus from EGU General Assembly 2013 abstracts, from PDF files stored in directory -i, store it in an .RData file, overwrite preexisting .RData File
 
+    ./import_egu_records.R -i /home/knb/Downloads/egu-2013-pdfs -f egutest -d egutest -x
 
+**process_term-doc-matrix.R** load .RData file, create word-clouds from the documents in the corpus
+
+    ./process_term-doc-matrix.R --infile data/Rdata/corpus--education-publicrel-outreach.RData
  
+*This file is not usd at this time*
 **process_corpus.R** loads an .RData file, creates a term-document-matrix from the corpus in the .RData file (must be in variable *corpus*):
 
     ./process_corpus.R --infile .../R_text_mining/data/Rdata/corpus--corpus.RData.RData
     
 
 
-
-Script Command Line Options Overview
-=========
-
-**import_agu_records.R**
-
-    Usage: ./import_agu_records.R [options] file
-    
-    
-    Options:
-     -i INFILE, --infile=INFILE
-    		Infile, must be a CSV file and end in .csv
-    
-    	-x, --override
-    		Overwrite pre-existing .RData file 
-    
-    	-d OUTDIR, --outdir=OUTDIR
-    		Outdir, must be a subdir name such as 'volcanology' 
-    
-    	-f OUTFILE, --outfile=OUTFILE
-    		Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)
-    
-    	-n SHOW_N, --show_n=SHOW_N
-    		Show this many records in full. [default = 3]
-    
-    	-t, --termdocmatrix
-    		Also generate a term-document-matrix from corpus. [default=FALSE]
-    
-    	-v, --verbose
-    		Print (a lot of) extra output [default=false]
-    
-    	-q, --quietly
-    		Print little output
-    
-    	-h, --help
-    		Show this help message and exit
-    
-    -i Infile must be .csv file with AGU abstracts 
-       exported from http://agu-fm12.abstractcentral.com.
-    -f Filename can be absolute path or relative path.
-       If relative path, then infile will be loaded from directory
-       '..../abstracts-agu/'. (default: see config.R file)
-    -t If you specify the '-t' option, a term-document matrix will also be generated from the corpus 
-    and saved in  
-    '.../data/Rdata/'. (default: see config.R file)
-    
-
-    
-**process_corpus.R**:    
-    
-    Usage: ./process_corpus.R [options] file
-
-    
-    Options:
-     -i INFILE, --infile=INFILE
-    		Infile (must be .Rdata file with tm text corpus stored in variable 'corpus'
-    
-    	-x, --override
-    		Overwrite pre-existing .RData file 
-    
-    	-f OUTFILE, --outfile=OUTFILE
-    		Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)
-    
-    	-v, --verbose
-    		Print (a lot of) extra output [default=false]
-    
-    	-r REMOVESPARSE, --removesparse=REMOVESPARSE
-    		Remove sparse terms from the term document matrix
-    
-    	-s NMIN, --nmin=NMIN
-    		Minimum number of words in a phrase
-    
-    	-e NMAX, --nmax=NMAX
-    		Maximum number of words in a phrase
-    
-    	-q QUIETLY, --quietly=QUIETLY
-    		Print little output
-    
-    	-a ALGORITHM, --algorithm=ALGORITHM
-    		Tokenizing Algorithm to use to create the TDM. Can be "", bigram, ngram, sentdetect
-    
-    	-h, --help
-    		Show this help message and exit
