@@ -37,7 +37,7 @@ Please read the documentation in the ["doc"](doc) directory of this repo for an 
 
     ./process_term-doc-matrix.R --infile data/Rdata/corpus--education-publicrel-outreach.RData
  
-*This file is not usd at this time*
+*This file is not used at this time*
 **process_corpus.R** loads an .RData file, creates a term-document-matrix from the corpus in the .RData file (must be in variable *corpus*):
 
     ./process_corpus.R --infile .../R_text_mining/data/Rdata/corpus--corpus.RData.RData
