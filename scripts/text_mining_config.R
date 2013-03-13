@@ -36,6 +36,7 @@ text_mining_config$procscript="process_corpus.R"
 text_mining_config$max_length=50 # constrain verbosity
 text_mining_config$wd=getwd()
 text_mining_config$show_n_default=3
+text_mining_config$browserapp="firefox"
 ####
 text_mining_config$full_datadir = function(){paste0(homedir, datadir)}
 text_mining_config$full_rdatadir = function(){paste0(homedir, Rdatadir)}
