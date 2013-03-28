@@ -69,7 +69,9 @@ if(!file.exists(infile)){
 	print(paste0("Loading '", infile, "' ..."))
 }
 
-# TODO [GH3] add check 
+
+# TODO [GH3] add check that .RData infile exists
+
 load(infile, envir=tmpenv)
 corpus <- tmpenv$corpus
 show(corpus)
