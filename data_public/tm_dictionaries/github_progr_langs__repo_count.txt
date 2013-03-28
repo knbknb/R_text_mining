@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# githubog: http://ogp.me/ns/fb/githubog#">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Count of repositories in GitHub Archive by language as calculated using Faunus.  See http://hortonworks.com/blog/big-graph-data-on-hortonworks-data-platform/ for details.</title>
+
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="AucVBf02bgBv1Zkv/cfK9ng28QutJRX37Dmh5uFitxc=" name="csrf-token" />
+  <meta name="viewport" content="width=960">
+
+  <link type="text/plain" rel="author" href="http://github.com/humans.txt" />
+
+  <link href="https://gist.github.com/assets/application-d613a66b3ff51c2a1c93b8e24b62e7c4.css" media="screen, print" rel="stylesheet" />
+  <script src="https://gist.github.com/assets/application-69495b31327a6d7d03a448d233ce9c7a.js"></script>
+
+      <meta name="robots" content="noindex, nofollow">
+
+</head>
+
+<body class="">
+
+  <div id="wrapper">
+    
+
+    <div id="header" class="header header-logged-out">
+      <div class="container" class="clearfix">
+        <a class="header-logo-wordmark" href="https://gist.github.com/">
+          <img alt="GitHub:Gist" class="github-logo-4x" height="30" src="https://gist.github.com/assets/modules/header/logo@4x-d1f04d805ee6b4e58ccbdd0652f915f5.png">
+          <img alt="GitHub:Gist" class="github-logo-4x-hover" height="30" src="https://gist.github.com/assets/modules/header/logo@4x-hover-3d1e646ccb5193547b942350f87b068a.png">
+        </a>
+
+        <div class="header-actions">
+          <a class="button primary" href="https://github.com/signup?return_to=gist">Sign up for a GitHub Account</a>
+          <a class="button" href="/login?return_to=/anonymous/4379918" data-skip-pjax>Sign in</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-content" id="js-pjax-container" data-pjax-container>
+      <div class=" site-container js-site-container" data-url="/anonymous/4379918">
+  
+  <div class="pagehead repohead">
+  <div class="container">
+    <div class="title-actions-bar">
+      <ul class="pagehead-actions">
+        
+        <li>
+      </ul>
+      <h1 itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="entry-title public">
+        <span class="repo-label"><span>public</span></span>
+        <span class="mega-icon mega-icon-gist" ></span>
+        <div class="meta">
+          <div class="gist-author">
+            <img src="https://github.com/images/gravatars/gravatar-140.png" width="26" height="26">
+            <span class="author vcard">
+                anonymous
+            </span> /
+            <strong><a href="/anonymous/4379918" class="js-current-repository">gist:4379918</a></strong>
+          </div>
+          <div class="gist-timestamp">
+              <span class="datetime">Created <time class="js-relative-date" title="2012-12-26T11:56:34Z" datetime="2012-12-26T11:56:34Z">2012-12-26</time></span>
+          </div>
+      </h1>
+    </div>
+
+  </div>
+</div>
+
+
+
+<div class="gist-description container">
+  <p>Count of repositories in GitHub Archive by language as calculated using Faunus.  See http://hortonworks.com/blog/big-graph-data-on-hortonworks-data-platform/ for details.</p>
+</div>
+
+<div class="gist container">
+    <div class="root-pane">
+  <div class="menu-container">
+    <ul class="menu gisttabs">
+      <li>
+        <a href="/anonymous/4379918" class="selected">
+          Gist Detail
+        </a>
+      </li>
+
+        <li>
+          <a href="/anonymous/4379918/revisions" >
+            Revisions
+            <span class="counter">1</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="/anonymous/4379918/stars" >
+            Stars
+            <span class="counter">3</span>
+          </a>
+        </li>
+
+    </ul>
+  </div>
+
+  <ul class="export-references">
+    <li>
+      <a href="/anonymous/4379918/download" class="minibutton" rel="nofollow"><span class="mini-icon mini-icon-download"></span>Download Gist</a>
+    </li>
+    <li>
+      <label for="url-field"><strong>Clone</strong> this gist</label>
+      <input type="text" readonly spellcheck="false" class="url-field js-url-field" name="url-field" value="https://gist.github.com/4379918.git">
+    </li>
+    <li>
+      <label for="embed-field"><strong>Embed</strong> this gist</label>
+      <input type="text" readonly spellcheck="false" class="url-field js-url-field" name="embed-field" value="&lt;script src=&quot;https://gist.github.com/anonymous/4379918.js&quot;&gt;&lt;/script&gt;">
+    </li>
+    <li>
+      <label for="link-field"><strong>Link to</strong> this gist</label>
+      <input type="text" readonly spellcheck="false" class="url-field js-url-field" name="link-field" value="https://gist.github.com/anonymous/4379918">
+    </li>
+  </ul>
+</div>
+
+
+  <div class="column files">
+        <div id="file-gistfile1-txt" class="bubble">
+          <div class="file-box ">
+            <div class="meta">
+              <div class="file-info">
+                <span class="file-type-icon"><span class="mini-icon mini-icon-gist"></span></span>
+                <strong class="file-name js-selectable-text">gistfile1.txt</strong>
+              </div>
+              <div class="file-actions">
+                
+                <ul class="button-group">
+                  <li><a title="Permalink" href="#file-gistfile1-txt" class="file-actions-button tooltipped downwards permalink"><span class="mini-icon mini-icon-link"></span></a></li>
+                  <li><a title="View Raw" href="/anonymous/4379918/raw/746eba9154fd680dcaa65e6bdb5ed54e69fecb86/gistfile1.txt" data-skip-pjax class="file-actions-button tooltipped downwards raw-url"><span class="mini-icon mini-icon-code"></span></a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="suppressed">
+              <a class="js-show-suppressed-file">File suppressed. Click to show.</a>
+            </div>
+            
+
+
+  <div class="file-data">
+    <table cellpadding="0" cellspacing="0" class="lines highlight">
+      <tr>
+        <td class="line-numbers">
+          <span class="line-number" id="file-gistfile1-txt-L1" rel="file-gistfile1-txt-L1">1</span>
+          <span class="line-number" id="file-gistfile1-txt-L2" rel="file-gistfile1-txt-L2">2</span>
+          <span class="line-number" id="file-gistfile1-txt-L3" rel="file-gistfile1-txt-L3">3</span>
+          <span class="line-number" id="file-gistfile1-txt-L4" rel="file-gistfile1-txt-L4">4</span>
+          <span class="line-number" id="file-gistfile1-txt-L5" rel="file-gistfile1-txt-L5">5</span>
+          <span class="line-number" id="file-gistfile1-txt-L6" rel="file-gistfile1-txt-L6">6</span>
+          <span class="line-number" id="file-gistfile1-txt-L7" rel="file-gistfile1-txt-L7">7</span>
+          <span class="line-number" id="file-gistfile1-txt-L8" rel="file-gistfile1-txt-L8">8</span>
+          <span class="line-number" id="file-gistfile1-txt-L9" rel="file-gistfile1-txt-L9">9</span>
+          <span class="line-number" id="file-gistfile1-txt-L10" rel="file-gistfile1-txt-L10">10</span>
+          <span class="line-number" id="file-gistfile1-txt-L11" rel="file-gistfile1-txt-L11">11</span>
+          <span class="line-number" id="file-gistfile1-txt-L12" rel="file-gistfile1-txt-L12">12</span>
+          <span class="line-number" id="file-gistfile1-txt-L13" rel="file-gistfile1-txt-L13">13</span>
+          <span class="line-number" id="file-gistfile1-txt-L14" rel="file-gistfile1-txt-L14">14</span>
+          <span class="line-number" id="file-gistfile1-txt-L15" rel="file-gistfile1-txt-L15">15</span>
+          <span class="line-number" id="file-gistfile1-txt-L16" rel="file-gistfile1-txt-L16">16</span>
+          <span class="line-number" id="file-gistfile1-txt-L17" rel="file-gistfile1-txt-L17">17</span>
+          <span class="line-number" id="file-gistfile1-txt-L18" rel="file-gistfile1-txt-L18">18</span>
+          <span class="line-number" id="file-gistfile1-txt-L19" rel="file-gistfile1-txt-L19">19</span>
+          <span class="line-number" id="file-gistfile1-txt-L20" rel="file-gistfile1-txt-L20">20</span>
+          <span class="line-number" id="file-gistfile1-txt-L21" rel="file-gistfile1-txt-L21">21</span>
+          <span class="line-number" id="file-gistfile1-txt-L22" rel="file-gistfile1-txt-L22">22</span>
+          <span class="line-number" id="file-gistfile1-txt-L23" rel="file-gistfile1-txt-L23">23</span>
+          <span class="line-number" id="file-gistfile1-txt-L24" rel="file-gistfile1-txt-L24">24</span>
+          <span class="line-number" id="file-gistfile1-txt-L25" rel="file-gistfile1-txt-L25">25</span>
+          <span class="line-number" id="file-gistfile1-txt-L26" rel="file-gistfile1-txt-L26">26</span>
+          <span class="line-number" id="file-gistfile1-txt-L27" rel="file-gistfile1-txt-L27">27</span>
+          <span class="line-number" id="file-gistfile1-txt-L28" rel="file-gistfile1-txt-L28">28</span>
+          <span class="line-number" id="file-gistfile1-txt-L29" rel="file-gistfile1-txt-L29">29</span>
+          <span class="line-number" id="file-gistfile1-txt-L30" rel="file-gistfile1-txt-L30">30</span>
+          <span class="line-number" id="file-gistfile1-txt-L31" rel="file-gistfile1-txt-L31">31</span>
+          <span class="line-number" id="file-gistfile1-txt-L32" rel="file-gistfile1-txt-L32">32</span>
+          <span class="line-number" id="file-gistfile1-txt-L33" rel="file-gistfile1-txt-L33">33</span>
+          <span class="line-number" id="file-gistfile1-txt-L34" rel="file-gistfile1-txt-L34">34</span>
+          <span class="line-number" id="file-gistfile1-txt-L35" rel="file-gistfile1-txt-L35">35</span>
+          <span class="line-number" id="file-gistfile1-txt-L36" rel="file-gistfile1-txt-L36">36</span>
+          <span class="line-number" id="file-gistfile1-txt-L37" rel="file-gistfile1-txt-L37">37</span>
+          <span class="line-number" id="file-gistfile1-txt-L38" rel="file-gistfile1-txt-L38">38</span>
+          <span class="line-number" id="file-gistfile1-txt-L39" rel="file-gistfile1-txt-L39">39</span>
+          <span class="line-number" id="file-gistfile1-txt-L40" rel="file-gistfile1-txt-L40">40</span>
+          <span class="line-number" id="file-gistfile1-txt-L41" rel="file-gistfile1-txt-L41">41</span>
+          <span class="line-number" id="file-gistfile1-txt-L42" rel="file-gistfile1-txt-L42">42</span>
+          <span class="line-number" id="file-gistfile1-txt-L43" rel="file-gistfile1-txt-L43">43</span>
+          <span class="line-number" id="file-gistfile1-txt-L44" rel="file-gistfile1-txt-L44">44</span>
+          <span class="line-number" id="file-gistfile1-txt-L45" rel="file-gistfile1-txt-L45">45</span>
+          <span class="line-number" id="file-gistfile1-txt-L46" rel="file-gistfile1-txt-L46">46</span>
+          <span class="line-number" id="file-gistfile1-txt-L47" rel="file-gistfile1-txt-L47">47</span>
+          <span class="line-number" id="file-gistfile1-txt-L48" rel="file-gistfile1-txt-L48">48</span>
+          <span class="line-number" id="file-gistfile1-txt-L49" rel="file-gistfile1-txt-L49">49</span>
+          <span class="line-number" id="file-gistfile1-txt-L50" rel="file-gistfile1-txt-L50">50</span>
+          <span class="line-number" id="file-gistfile1-txt-L51" rel="file-gistfile1-txt-L51">51</span>
+          <span class="line-number" id="file-gistfile1-txt-L52" rel="file-gistfile1-txt-L52">52</span>
+          <span class="line-number" id="file-gistfile1-txt-L53" rel="file-gistfile1-txt-L53">53</span>
+          <span class="line-number" id="file-gistfile1-txt-L54" rel="file-gistfile1-txt-L54">54</span>
+          <span class="line-number" id="file-gistfile1-txt-L55" rel="file-gistfile1-txt-L55">55</span>
+          <span class="line-number" id="file-gistfile1-txt-L56" rel="file-gistfile1-txt-L56">56</span>
+          <span class="line-number" id="file-gistfile1-txt-L57" rel="file-gistfile1-txt-L57">57</span>
+          <span class="line-number" id="file-gistfile1-txt-L58" rel="file-gistfile1-txt-L58">58</span>
+          <span class="line-number" id="file-gistfile1-txt-L59" rel="file-gistfile1-txt-L59">59</span>
+          <span class="line-number" id="file-gistfile1-txt-L60" rel="file-gistfile1-txt-L60">60</span>
+          <span class="line-number" id="file-gistfile1-txt-L61" rel="file-gistfile1-txt-L61">61</span>
+          <span class="line-number" id="file-gistfile1-txt-L62" rel="file-gistfile1-txt-L62">62</span>
+          <span class="line-number" id="file-gistfile1-txt-L63" rel="file-gistfile1-txt-L63">63</span>
+          <span class="line-number" id="file-gistfile1-txt-L64" rel="file-gistfile1-txt-L64">64</span>
+          <span class="line-number" id="file-gistfile1-txt-L65" rel="file-gistfile1-txt-L65">65</span>
+          <span class="line-number" id="file-gistfile1-txt-L66" rel="file-gistfile1-txt-L66">66</span>
+          <span class="line-number" id="file-gistfile1-txt-L67" rel="file-gistfile1-txt-L67">67</span>
+          <span class="line-number" id="file-gistfile1-txt-L68" rel="file-gistfile1-txt-L68">68</span>
+          <span class="line-number" id="file-gistfile1-txt-L69" rel="file-gistfile1-txt-L69">69</span>
+          <span class="line-number" id="file-gistfile1-txt-L70" rel="file-gistfile1-txt-L70">70</span>
+          <span class="line-number" id="file-gistfile1-txt-L71" rel="file-gistfile1-txt-L71">71</span>
+          <span class="line-number" id="file-gistfile1-txt-L72" rel="file-gistfile1-txt-L72">72</span>
+          <span class="line-number" id="file-gistfile1-txt-L73" rel="file-gistfile1-txt-L73">73</span>
+          <span class="line-number" id="file-gistfile1-txt-L74" rel="file-gistfile1-txt-L74">74</span>
+          <span class="line-number" id="file-gistfile1-txt-L75" rel="file-gistfile1-txt-L75">75</span>
+          <span class="line-number" id="file-gistfile1-txt-L76" rel="file-gistfile1-txt-L76">76</span>
+          <span class="line-number" id="file-gistfile1-txt-L77" rel="file-gistfile1-txt-L77">77</span>
+          <span class="line-number" id="file-gistfile1-txt-L78" rel="file-gistfile1-txt-L78">78</span>
+          <span class="line-number" id="file-gistfile1-txt-L79" rel="file-gistfile1-txt-L79">79</span>
+          <span class="line-number" id="file-gistfile1-txt-L80" rel="file-gistfile1-txt-L80">80</span>
+          <span class="line-number" id="file-gistfile1-txt-L81" rel="file-gistfile1-txt-L81">81</span>
+          <span class="line-number" id="file-gistfile1-txt-L82" rel="file-gistfile1-txt-L82">82</span>
+          <span class="line-number" id="file-gistfile1-txt-L83" rel="file-gistfile1-txt-L83">83</span>
+          <span class="line-number" id="file-gistfile1-txt-L84" rel="file-gistfile1-txt-L84">84</span>
+          <span class="line-number" id="file-gistfile1-txt-L85" rel="file-gistfile1-txt-L85">85</span>
+          <span class="line-number" id="file-gistfile1-txt-L86" rel="file-gistfile1-txt-L86">86</span>
+          <span class="line-number" id="file-gistfile1-txt-L87" rel="file-gistfile1-txt-L87">87</span>
+          <span class="line-number" id="file-gistfile1-txt-L88" rel="file-gistfile1-txt-L88">88</span>
+          <span class="line-number" id="file-gistfile1-txt-L89" rel="file-gistfile1-txt-L89">89</span>
+          <span class="line-number" id="file-gistfile1-txt-L90" rel="file-gistfile1-txt-L90">90</span>
+          <span class="line-number" id="file-gistfile1-txt-L91" rel="file-gistfile1-txt-L91">91</span>
+          <span class="line-number" id="file-gistfile1-txt-L92" rel="file-gistfile1-txt-L92">92</span>
+          <span class="line-number" id="file-gistfile1-txt-L93" rel="file-gistfile1-txt-L93">93</span>
+          <span class="line-number" id="file-gistfile1-txt-L94" rel="file-gistfile1-txt-L94">94</span>
+          <span class="line-number" id="file-gistfile1-txt-L95" rel="file-gistfile1-txt-L95">95</span>
+          <span class="line-number" id="file-gistfile1-txt-L96" rel="file-gistfile1-txt-L96">96</span>
+        </td>
+        <td class="line-data">
+          <pre class="line-pre"><div class="line" id="file-gistfile1-txt-LC1">Apex  308</div><div class="line" id="file-gistfile1-txt-LC2">Arc	29</div><div class="line" id="file-gistfile1-txt-LC3">Assembly	1312</div><div class="line" id="file-gistfile1-txt-LC4">Augeas	19</div><div class="line" id="file-gistfile1-txt-LC5">AutoHotkey	329</div><div class="line" id="file-gistfile1-txt-LC6">D	1667</div><div class="line" id="file-gistfile1-txt-LC7">DCPU-16 Assembly	2</div><div class="line" id="file-gistfile1-txt-LC8">Dart	575</div><div class="line" id="file-gistfile1-txt-LC9">Delphi	974</div><div class="line" id="file-gistfile1-txt-LC10">Erlang	5503</div><div class="line" id="file-gistfile1-txt-LC11">Factor	54</div><div class="line" id="file-gistfile1-txt-LC12">Fancy	13</div><div class="line" id="file-gistfile1-txt-LC13">Fantom	12</div><div class="line" id="file-gistfile1-txt-LC14">Go	6548</div><div class="line" id="file-gistfile1-txt-LC15">Groovy	5140</div><div class="line" id="file-gistfile1-txt-LC16">Ioke	7</div><div class="line" id="file-gistfile1-txt-LC17">Java	159526</div><div class="line" id="file-gistfile1-txt-LC18">Kotlin	66</div><div class="line" id="file-gistfile1-txt-LC19">Lua	6000</div><div class="line" id="file-gistfile1-txt-LC20">Max/MSP	8</div><div class="line" id="file-gistfile1-txt-LC21">Mirah	26</div><div class="line" id="file-gistfile1-txt-LC22">Modelica	34</div><div class="line" id="file-gistfile1-txt-LC23">Nemerle	94</div><div class="line" id="file-gistfile1-txt-LC24">Objective-J	295</div><div class="line" id="file-gistfile1-txt-LC25">OpenEdge ABL	111</div><div class="line" id="file-gistfile1-txt-LC26">Powershell	86</div><div class="line" id="file-gistfile1-txt-LC27">Pure Data	202</div><div class="line" id="file-gistfile1-txt-LC28">Rebol	69</div><div class="line" id="file-gistfile1-txt-LC29">VHDL	373</div><div class="line" id="file-gistfile1-txt-LC30">XQuery	145</div><div class="line" id="file-gistfile1-txt-LC31">null	698396</div><div class="line" id="file-gistfile1-txt-LC32">ASP	763</div><div class="line" id="file-gistfile1-txt-LC33">AppleScript	70</div><div class="line" id="file-gistfile1-txt-LC34">Boo	47</div><div class="line" id="file-gistfile1-txt-LC35">Bro	22</div><div class="line" id="file-gistfile1-txt-LC36">C#	37912</div><div class="line" id="file-gistfile1-txt-LC37">C++	60487</div><div class="line" id="file-gistfile1-txt-LC38">Clojure	8068</div><div class="line" id="file-gistfile1-txt-LC39">ColdFusion	971</div><div class="line" id="file-gistfile1-txt-LC40">Coq	149</div><div class="line" id="file-gistfile1-txt-LC41">Dylan	53</div><div class="line" id="file-gistfile1-txt-LC42">Ecl	8</div><div class="line" id="file-gistfile1-txt-LC43">Eiffel	126</div><div class="line" id="file-gistfile1-txt-LC44">Emacs Lisp	9956</div><div class="line" id="file-gistfile1-txt-LC45">F#	646</div><div class="line" id="file-gistfile1-txt-LC46">FORTRAN	745</div><div class="line" id="file-gistfile1-txt-LC47">Gosu	65</div><div class="line" id="file-gistfile1-txt-LC48">JavaScript	263316</div><div class="line" id="file-gistfile1-txt-LC49">Julia	172</div><div class="line" id="file-gistfile1-txt-LC50">Matlab	2047</div><div class="line" id="file-gistfile1-txt-LC51">Max	1</div><div class="line" id="file-gistfile1-txt-LC52">Nimrod	29</div><div class="line" id="file-gistfile1-txt-LC53">Nu	23</div><div class="line" id="file-gistfile1-txt-LC54">Opa	70</div><div class="line" id="file-gistfile1-txt-LC55">Parrot	24</div><div class="line" id="file-gistfile1-txt-LC56">PowerShell	951</div><div class="line" id="file-gistfile1-txt-LC57">Puppet	4281</div><div class="line" id="file-gistfile1-txt-LC58">Racket	750</div><div class="line" id="file-gistfile1-txt-LC59">Scilab	103</div><div class="line" id="file-gistfile1-txt-LC60">Shell	44263</div><div class="line" id="file-gistfile1-txt-LC61">Standard ML	148</div><div class="line" id="file-gistfile1-txt-LC62">SuperCollider	131</div><div class="line" id="file-gistfile1-txt-LC63">Tcl	471</div><div class="line" id="file-gistfile1-txt-LC64">Verilog	435</div><div class="line" id="file-gistfile1-txt-LC65">eC	5</div><div class="line" id="file-gistfile1-txt-LC66">ooc	59</div><div class="line" id="file-gistfile1-txt-LC67">ActionScript	5743</div><div class="line" id="file-gistfile1-txt-LC68">Ada	158</div><div class="line" id="file-gistfile1-txt-LC69">Arduino	2020</div><div class="line" id="file-gistfile1-txt-LC70">C	68315</div><div class="line" id="file-gistfile1-txt-LC71">Ceylon	11</div><div class="line" id="file-gistfile1-txt-LC72">CoffeeScript	10163</div><div class="line" id="file-gistfile1-txt-LC73">Common Lisp	2550</div><div class="line" id="file-gistfile1-txt-LC74">DCPU-16 ASM	120</div><div class="line" id="file-gistfile1-txt-LC75">Elixir	157</div><div class="line" id="file-gistfile1-txt-LC76">HaXe	787</div><div class="line" id="file-gistfile1-txt-LC77">Haskell	8762</div><div class="line" id="file-gistfile1-txt-LC78">Io	83</div><div class="line" id="file-gistfile1-txt-LC79">Logtalk	7</div><div class="line" id="file-gistfile1-txt-LC80">OCaml	1405</div><div class="line" id="file-gistfile1-txt-LC81">Objective-C	47026</div><div class="line" id="file-gistfile1-txt-LC82">PHP	144112</div><div class="line" id="file-gistfile1-txt-LC83">Perl	24572</div><div class="line" id="file-gistfile1-txt-LC84">Prolog	847</div><div class="line" id="file-gistfile1-txt-LC85">Python	145350</div><div class="line" id="file-gistfile1-txt-LC86">R	3427</div><div class="line" id="file-gistfile1-txt-LC87">Ruby	243429</div><div class="line" id="file-gistfile1-txt-LC88">Rust	470</div><div class="line" id="file-gistfile1-txt-LC89">Scala	11247</div><div class="line" id="file-gistfile1-txt-LC90">Scheme	1273</div><div class="line" id="file-gistfile1-txt-LC91">Self	6</div><div class="line" id="file-gistfile1-txt-LC92">Smalltalk	235</div><div class="line" id="file-gistfile1-txt-LC93">Turing	34</div><div class="line" id="file-gistfile1-txt-LC94">Vala	349</div><div class="line" id="file-gistfile1-txt-LC95">VimL	26243</div><div class="line" id="file-gistfile1-txt-LC96">Visual Basic	1743</div></pre>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+          </div>
+        </div>
+    <div id="comments" class="new-comments">
+      
+<div class="discussion-bubble js-comment-container">
+  <img class="discussion-bubble-avatar" width="48" height="48" src="https://secure.gravatar.com/avatar/f42d7b22944b88edf0540ef3fad653d7?s=140&amp;d=https://github.com/images/gravatars/gravatar-140.png">
+  <div class="discussion-bubble-content bubble">
+    <div class="discussion-bubble-inner">
+
+      <div class="comment js-comment" id="comment-672583">
+        <div class="comment-header normal-comment-header">
+          <a href="#" class="comment-type-icon mini-icon mini-icon-commit-comment"></a>
+          <a href="/rking" class="comment-header-author">rking</a>
+          <span class="comment-header-action-text">
+            <span id="gistcomment-672583">
+              <a href="/anonymous/4379918/#comment-672583">commented</a></span>
+          </span>
+          <span class="comment-header-right">
+            <span id="gistcomment-672583">
+              <a href="/anonymous/4379918/#comment-672583" class="comment-header-date">
+                <time class="js-relative-date" title="2012-12-26T20:44:06Z" datetime="2012-12-26T20:44:06Z">2012-12-26</time>
+              </a>
+            </span>
+          </span>
+        </div>
+
+
+        <div class="comment-content">
+          <div class="edit-comment-hide">
+            <!-- <div class="comment-form-error">There has been an error</div> -->
+            <div class="comment-body markdown-body markdown-format js-comment-body">
+                <p>Sorting numerically:</p>
+
+<p>698396 null<br>
+263316 JavaScript<br>
+243429 Ruby<br>
+159526 Java<br>
+145350 Python<br>
+144112 PHP<br>
+68315 C<br>
+60487 C++<br>
+47026 Objective-C<br>
+44263 Shell<br>
+37912 C#<br>
+26243 VimL<br>
+24572 Perl<br>
+11247 Scala<br>
+10163 CoffeeScript<br>
+9956 Emacs Lisp<br>
+8762 Haskell<br>
+8068 Clojure<br>
+6548 Go<br>
+6000 Lua<br>
+5743 ActionScript<br>
+5503 Erlang<br>
+5140 Groovy<br>
+4281 Puppet<br>
+3427 R<br>
+2550 Common Lisp<br>
+2047 Matlab<br>
+2020 Arduino<br>
+1743 Visual Basic<br>
+1667 D<br>
+1405 OCaml<br>
+1312 Assembly<br>
+1273 Scheme<br>
+974 Delphi<br>
+971 ColdFusion<br>
+951 PowerShell<br>
+847 Prolog<br>
+787 HaXe<br>
+763 ASP<br>
+750 Racket<br>
+745 FORTRAN<br>
+646 F#<br>
+575 Dart<br>
+471 Tcl<br>
+470 Rust<br>
+435 Verilog<br>
+373 VHDL<br>
+349 Vala<br>
+329 AutoHotkey<br>
+308 Apex<br>
+295 Objective-J<br>
+235 Smalltalk<br>
+202 Pure Data<br>
+172 Julia<br>
+158 Ada<br>
+157 Elixir<br>
+149 Coq<br>
+148 Standard ML<br>
+145 XQuery<br>
+131 SuperCollider<br>
+126 Eiffel<br>
+120 DCPU-16 ASM<br>
+111 OpenEdge ABL<br>
+103 Scilab<br>
+94 Nemerle<br>
+86 Powershell<br>
+83 Io<br>
+70 Opa<br>
+70 AppleScript<br>
+69 Rebol<br>
+66 Kotlin<br>
+65 Gosu<br>
+59 ooc<br>
+54 Factor<br>
+53 Dylan<br>
+47 Boo<br>
+34 Turing<br>
+34 Modelica<br>
+29 Nimrod<br>
+29 Arc<br>
+26 Mirah<br>
+24 Parrot<br>
+23 Nu<br>
+22 Bro<br>
+19 Augeas<br>
+13 Fancy<br>
+12 Fantom<br>
+11 Ceylon<br>
+8 Max/MSP<br>
+8 Ecl<br>
+7 Logtalk<br>
+7 Ioke<br>
+6 Self<br>
+5 eC<br>
+2 DCPU-16 Assembly<br>
+1 Max</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="discussion-bubble js-comment-container">
+  <img class="discussion-bubble-avatar" width="48" height="48" src="https://secure.gravatar.com/avatar/b88d0f594813e7c5cd925043396738a7?s=140&amp;d=https://github.com/images/gravatars/gravatar-140.png">
+  <div class="discussion-bubble-content bubble">
+    <div class="discussion-bubble-inner">
+
+      <div class="comment js-comment" id="comment-672632">
+        <div class="comment-header normal-comment-header">
+          <a href="#" class="comment-type-icon mini-icon mini-icon-commit-comment"></a>
+          <a href="/kr" class="comment-header-author">kr</a>
+          <span class="comment-header-action-text">
+            <span id="gistcomment-672632">
+              <a href="/anonymous/4379918/#comment-672632">commented</a></span>
+          </span>
+          <span class="comment-header-right">
+            <span id="gistcomment-672632">
+              <a href="/anonymous/4379918/#comment-672632" class="comment-header-date">
+                <time class="js-relative-date" title="2012-12-26T20:57:41Z" datetime="2012-12-26T20:57:41Z">2012-12-26</time>
+              </a>
+            </span>
+          </span>
+        </div>
+
+
+        <div class="comment-content">
+          <div class="edit-comment-hide">
+            <!-- <div class="comment-form-error">There has been an error</div> -->
+            <div class="comment-body markdown-body markdown-format js-comment-body">
+                <p>What does this do to account for mixed-language repos? Might it be better to count LOC instead of repos?</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="discussion-bubble js-comment-container">
+  <img class="discussion-bubble-avatar" width="48" height="48" src="https://secure.gravatar.com/avatar/4df1cfae6e8c7fbdb013818785318aa7?s=140&amp;d=https://github.com/images/gravatars/gravatar-140.png">
+  <div class="discussion-bubble-content bubble">
+    <div class="discussion-bubble-inner">
+
+      <div class="comment js-comment" id="comment-673109">
+        <div class="comment-header normal-comment-header">
+          <a href="#" class="comment-type-icon mini-icon mini-icon-commit-comment"></a>
+          <a href="/xavi-" class="comment-header-author">xavi-</a>
+          <span class="comment-header-action-text">
+            <span id="gistcomment-673109">
+              <a href="/anonymous/4379918/#comment-673109">commented</a></span>
+          </span>
+          <span class="comment-header-right">
+            <span id="gistcomment-673109">
+              <a href="/anonymous/4379918/#comment-673109" class="comment-header-date">
+                <time class="js-relative-date" title="2012-12-27T01:15:51Z" datetime="2012-12-27T01:15:51Z">2012-12-27</time>
+              </a>
+            </span>
+          </span>
+        </div>
+
+
+        <div class="comment-content">
+          <div class="edit-comment-hide">
+            <!-- <div class="comment-form-error">There has been an error</div> -->
+            <div class="comment-body markdown-body markdown-format js-comment-body">
+                <p>Who has the 1 Max repo?</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="discussion-bubble js-comment-container">
+  <img class="discussion-bubble-avatar" width="48" height="48" src="https://secure.gravatar.com/avatar/bf6bba23e217963d1f628aeb68d91674?s=140&amp;d=https://github.com/images/gravatars/gravatar-140.png">
+  <div class="discussion-bubble-content bubble">
+    <div class="discussion-bubble-inner">
+
+      <div class="comment js-comment" id="comment-673591">
+        <div class="comment-header normal-comment-header">
+          <a href="#" class="comment-type-icon mini-icon mini-icon-commit-comment"></a>
+          <a href="/nviennot" class="comment-header-author">nviennot</a>
+          <span class="comment-header-action-text">
+            <span id="gistcomment-673591">
+              <a href="/anonymous/4379918/#comment-673591">commented</a></span>
+          </span>
+          <span class="comment-header-right">
+            <span id="gistcomment-673591">
+              <a href="/anonymous/4379918/#comment-673591" class="comment-header-date">
+                <time class="js-relative-date" title="2012-12-27T07:00:10Z" datetime="2012-12-27T07:00:10Z">2012-12-27</time>
+              </a>
+            </span>
+          </span>
+        </div>
+
+
+        <div class="comment-content">
+          <div class="edit-comment-hide">
+            <!-- <div class="comment-form-error">There has been an error</div> -->
+            <div class="comment-body markdown-body markdown-format js-comment-body">
+                <p>C# is right after perl and vim. windows+git must be a nightmare :)</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+    </div>
+      <p class="uncommentable"><span class="mini-icon mini-icon-exclamation"></span> Please <a href="/login?return_to=/anonymous/4379918" rel="nofollow">sign in</a> to comment on this gist.</p>
+  </div>
+</div>
+
+  <div class="context-overlay"></div>
+</div>
+
+    </div>
+    <div class="slow-loading-overlay"></div>
+  </div>
+
+  <div id="ajax-error-message" class="flash flash-error">
+    <div class="container">
+      <span class="mini-icon mini-icon-exclamation"></span>
+      Something went wrong with that request. Please try again.
+      <a href="#" class="mini-icon mini-icon-remove-close ajax-error-dismiss"></a>
+    </div>
+  </div>
+
+  <footer>
+    <div id="footer">
+  <div class="container clearfix">
+
+    <p class="right">&copy; 2013 GitHub Inc. All rights reserved.</p>
+    <a class="left" href="/">
+      <span class="mega-icon mega-icon-invertocat"></span>
+    </a>
+    <ul id="legal">
+      <li><a href="http://github.com/blog">The GitHub Blog</a></li>
+      <li><a href="mailto:support@github.com">Support</a></li>
+      <li><a href="https://github.com/contact">Contact</a></li>
+    </ul>
+
+  </div><!-- /.container -->
+</div><!-- /.#footer -->
+
+  </footer>
+
+</body>
+</html>
