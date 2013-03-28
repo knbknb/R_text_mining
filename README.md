@@ -9,6 +9,13 @@ This was a big annual conference for Earth scientists, in particular geophysicis
 
 Use R to draw interesting conclusions from a subset of the 23000 abstracts submitted. (These are *not* included with this repository.)
 
+perform *text-mining* on  [abstracts][0] of science contributions, 
+presented at the EGU General Assembly 2013, Vienna (see below). 
+This is also a big annual conference for Earth scientists, in particular geophysicists and geologists.
+
+Use R to draw interesting conclusions from a subset of the 11000 abstracts submitted. (These are *not* included with this repository.)
+
+
 
 
 This project will be presented at [EGU][2], the annual [General Assembly 2013][1], a conference in Vienna to happen in April 2013. 
