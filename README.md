@@ -1,9 +1,9 @@
 R_text_mining
 =============
 
-**Work in progress**.
+**R project; Work in progress**
 
-R project: (Part 1) Perform *text-mining* on  abstracts of science contributions, 
+ (Part 1) Perform *text-mining* on  abstracts of science contributions, 
 presented at the [AGU Fall Meeting 2012][0], San Francisco. 
 This was a big annual conference for Earth scientists, in particular geophysicists and geologists.
 
