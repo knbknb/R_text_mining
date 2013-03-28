@@ -91,6 +91,7 @@ print('removing digitPhrases such as "1 2"   "= 2"   "3 4"  "et al":')
 tempterms <- Terms(TermDocumentMatrix(corpus))
 
 tempterms <- text_mining_util$digitPhrase(tempterms)
+tempterms <- grep("'", tempterms)
 #tempterms
 corpus <- tm_map(corpus, function(x){ removeWords(x, c("et al", "^\\s*\\d+\\s*$", "^\\s*\\d+\\s?\\d+\\s*$", tempterms)) })
 #remove all terms that onsist only of digits and whitespace such as 0 1 
