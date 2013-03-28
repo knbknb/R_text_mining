@@ -15,7 +15,7 @@ text_mining_util = new.env()
 ## 
 text_mining_util$earthsci_stopwords = function(){
 	#return a vector
-	c( "data", "earth", "science", "using", "1", "2", "3" ) # "(..,"
+	c( "data", "earth", "science", "using", "\\s*et\\s+al\\s*" ) # "(..,"
 }
 
 
@@ -60,6 +60,27 @@ text_mining_util$cleanup = function(doc, sep= " "){
 	y
 }
 
+#remove words that are only a digits plus and whitespace
+text_mining_util$digitPhrase <- function (x){
+	subset(x, grepl("^[\\d\\s]+$", x, perl=TRUE))
+}
+
+#remove words that are only a digits plus and whitespace
+text_mining_util$somePhrase <- function (x){
+	c("el al")
+}
+
+# perform heuristic stem completion by searching frequent Terms
+text_mining_util$sft <- function(corpus, tdmatrix, lowfreq, highfreq){
+	 fqt = findFreqTerms(tdmatrix, lowfreq, highfreq) #, type="longest"
+	 stemCompletion(fqt, corpus)
+}
+# perform heuristic stem completion for a single term
+# by searching for associativity
+text_mining_util$sa <- function(corpus, tdmatrix, term, cor){
+	 n = names(findAssocs(tdmatrix, term, cor))
+	 stemCompletion(n,	corpus)
+}
 
 ########################################
 ## Has to be last in file

@@ -13,6 +13,8 @@ config="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/scripts/te
 source(config) # should be absolute path, 
 wcloud=paste0(text_mining_config$homedir, "scripts/text_mining_wordcloud.R")
 source(wcloud)
+utils=paste0(text_mining_config$homedir, "scripts/text_mining_utils.R")
+source(utils)
 
 library(optparse)
 library("tm") #text mining
@@ -20,10 +22,11 @@ library("RWeka") # for tokenization algorithms more complicated  than single-wor
 library("tools") # Utilities for listing files, and manipulating file paths.
 library("wordcloud")
 #library("RColorBrewer")
-
+infile_default = "/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/data/Rdata/corpus--egu-essi.RData"
 option_list <- list(
+		
 		make_option(c("-i", "--infile"), type="character", 
-				default="mydata.Rdata", dest="infile",
+				default=infile_default, dest="infile",
 				help= "Infile (must be .Rdata file with tm text corpus stored in variable 'corpus'"),
 		make_option(c("-v", "--verbose"), 
 				action="store_true", default=TRUE,
@@ -76,19 +79,43 @@ if(!file.exists(infile)){
 # TODO add check 
 load(infile, envir=tmpenv)
 corpus <- tmpenv$corpus
+
+show(corpus)
+print("")
+print("Removing stopwords")
+corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
+
+print("")
+print('removing digitPhrases such as "1 2"   "= 2"   "3 4"  "et al":')
+
+tempterms <- Terms(TermDocumentMatrix(corpus))
+
+tempterms <- text_mining_util$digitPhrase(tempterms)
+#tempterms
+corpus <- tm_map(corpus, function(x){ removeWords(x, c("et al", "^\\s*\\d+\\s*$", "^\\s*\\d+\\s?\\d+\\s*$", tempterms)) })
+#remove all terms that onsist only of digits and whitespace such as 0 1 
+
+
 show(corpus)
 
 lsz = text_mining_wordcloud$find_fontsize(wordlength_min = 2, wordlength_max = 2)
 
 # do not use when stopwords are removed?
+UnigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 1))
 BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = wmin, max = wmax))
 tdm <- TermDocumentMatrix(corpus, control = list(tokenize = BigramTokenizer))
 #BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
 #tdm <- TermDocumentMatrix(corpus, control = list(tokenize = BigramTokenizer))
 #tdm = DocumentTermMatrix(corpus, control=list(tokenize= "NGramTokenizer"))
-#tdm = TermDocumentMatrix(corpus)
+#
+tdm <- removeSparseTerms(tdm, 0.99)
+print("----")
+print("tdm properties")
+str(tdm)
 tdm_top_N_percent = tdm$nrow / 100 * topN_percentage_wanted
+#text_mining_util$sft(corpus, tdm, tdm_top_N_percent , Inf)
 topNwords= findFreqTerms(tdm, lowfreq= tdm_top_N_percent , highfreq=Inf); 
+
 print(paste0("\ntop n words of '", infile, "':\n"))
 print(topNwords)
 
@@ -108,5 +135,5 @@ d <- data.frame(word = names(v),freq=v)
 #wordcloud(d$word,d$freq,scale=c(9,.3),min.freq=4,max.words=Inf,random.order=FALSE,rot.per=.15,colors=pal,vfont=c("sans serif","plain"))
 #dev.off()
 #text_mining_wordcloud$wordclouds_pngs(d, seq=c(0.1,0.5,1,2,5), title=infile)
-text_mining_wordcloud$wordclouds_pngs(d, seq=c(10,20,30,40,50), title=infile, fn=paste0(infile, "-", wmin, "-", wmax ,"-"), lettersize=lsz)
+text_mining_wordcloud$wordclouds_pngs(d, seq=c(10,20,30,40,50), title=basename(infile), fn=paste0(infile, "-", wmin, "-", wmax ,"-"), lettersize=lsz)
 warnings()

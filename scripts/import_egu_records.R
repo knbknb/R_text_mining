@@ -110,34 +110,38 @@ if(!file.exists(indir)){
 	print(paste0("Loading all pdfs from '", indir, "' ..."))
 }
 mapping = list(Content = "Contents", Heading = "Heading", Author = "Author", Language = "Language", ID = "ID", Origin = "Origin",
-Description = "Description", DateTimeStamp = "DateTimeStamp", Title = "Title"
+Description = "Description", Title = "Title" #, DateTimeStamp = "DateTimeStamp"
 )
 myReader = readTabular(mapping = mapping)
 #library("wordnet") # dictionaries
-pdfs_parsed= lapply(pdfs, function(x){
-	p = file.path(indir, x)
-	pdfv = readPDF(PdftotextOptions = "-layout")(elem = list(uri = p),language = "en",id=x)
-	#exclude elements 1:7 - standard EGU copyright header
-	pdfv[-7:-1]
-	
-	end_of_header = min(which(pdfv == "")) - 1
-	#will contain title and authors
-	attr(pdfv, "Description") = paste(pdfv[1:end_of_header], collapse=" ")
-	#str(pdfv)
-	# exclude author information
-	data.frame(Contents = paste(pdfv[(-1 * end_of_header):-1], collapse=" "),
-		 Title =  ifelse(is.character(attr(pdfv, "Title")), attr(pdfv, "Title"), "?"),
-		 Author = ifelse(is.character(attr(pdfv, "Author")), attr(pdfv, "Author"), "?"),
-		 DateTimeStamp = attr(pdfv, "DateTimeStamp"),
-		 Description = attr(pdfv, "Description"),
-		 Heading  = ifelse(is.character(attr(pdfv, "Heading")), attr(pdfv, "Heading"), "?"),
-		 ID  = ifelse(is.character(attr(pdfv, "ID")), attr(pdfv, "ID"), "?"),
-		 Language  = ifelse(is.character(attr(pdfv, "Language")), attr(pdfv, "Language"), "?"),
+doit <- function(x){
+#pdfs_parsed= lapply(pdfs, function(x) {
+p = file.path(indir, x)
+pdfv = readPDF(PdftotextOptions = "-layout")(elem = list(uri = p),language = "en",id=x)
+#exclude elements 1:7 - standard EGU copyright header
+pdfv[-7:-1]
+
+end_of_header = min(which(pdfv == "")) - 1
+#will contain title and authors
+attr(pdfv, "Description") = paste(pdfv[1:end_of_header], collapse=" ")
+#str(pdfv)
+# exclude author information
+data.frame(Contents = paste(pdfv[(-1 * end_of_header):-1], collapse=" "),
+		Title =  ifelse(is.character(attr(pdfv, "Title")), attr(pdfv, "Title"), "?"),
+		Author = ifelse(is.character(attr(pdfv, "Author")), attr(pdfv, "Author"), "?"),
+		#DateTimeStamp = ifelse(is.character(attr(pdfv, "DateTimeStamp")), attr(pdfv, "DateTimeStamp"),  as.POSIXlt("1919-01-01 01:00") ),
+		#DateTimeStamp = attr(pdfv, "DateTimeStamp"),
+		Description = attr(pdfv, "Description"),
+		Heading  = ifelse(is.character(attr(pdfv, "Heading")), attr(pdfv, "Heading"), "?"),
+		ID  = ifelse(is.character(attr(pdfv, "ID")), attr(pdfv, "ID"), "?"),
+		Language  = ifelse(is.character(attr(pdfv, "Language")), attr(pdfv, "Language"), "?"),
 		# Language =  attr(pdfv, "Language"),
 		# LocalMetaData = attr(pdfv, "LocalMetaData"),
-		 Origin= attr(pdfv, "Origin"),
-		 stringsAsFactors=FALSE) 
-	})
+		Origin= attr(pdfv, "Origin"),
+		stringsAsFactors=FALSE)
+		
+}
+pdfs_parsed= lapply(pdfs, function(i) {try(doit(i), FALSE)})
 #str(pdfs_parsed[[1]])
 #quit()
 stopifnot(length(pdfs_parsed) > 0)

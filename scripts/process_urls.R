@@ -6,7 +6,8 @@
 #
 # $Id$
 # Author: knb
-# read an Rdata file containing corpus built from AGU FALL MEETING 2012 abstracts, 
+# read an Rdata file containing corpus built from AGU FALL MEETING 2012 abstracts, or
+# EGU General assembly abstracts
 # 
 ####
 config="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/scripts/text_mining_config.R"
@@ -121,35 +122,40 @@ urls1
 #github_urls = grep("github", trms[urls0], perl=TRUE, value = TRUE )
 
 #urls = head(unique(urls1[order(nchar(urls1))]), 15)
-urls = unique(urls1[order(nchar(urls1))])
-#h = getCurlHandle(header = TRUE, netrc = TRUE)
+urls.https = subset(urls1, grepl("https:", urls1))
+urls.http = subset(urls1, !grepl("https:", urls1))
+urls.nohttp = subset(urls1, !grepl("^http:", urls.http, perl=TRUE))
 
-doit <- function(x)
+#u %in% grep("^M", nm, value=TRUE)
+#subset(state.x77, grepl("^M", nm), Illiteracy:Murder)
+#h = getCurlHandle(header = TRUE, netrc = TRUE)
+urlcheck <- function(x)
 {
 	print(paste0("checking ", x))
 	e = url_success(x)
 	if(e == TRUE){
 		x
-	} else if(any(grep("^www.+", x, perl=TRUE))){
+	} else if (grepl("^www.+", x, perl=TRUE)){
 		paste0("url invalid: ", x)
 		y = paste0("http://", x)
 		str(y)
-		doit(y) 
+		urlcheck(y) 
 	    
 	}
 	else stop(paste0("url invalid: ", x))
 }
-
+#urls <- c(urls.http, urls.nohttp)
+urls <- c(urls.http)
 #perform HEAD request on URls to exclude invalid urls
-res <- lapply(urls, function(i) try(doit(i), FALSE))
+res <- lapply(urls, function(i) try(urlcheck(i), FALSE))
 ## keep only urls that worked
-urls = unlist(res[sapply(res, function(x) !inherits(x, "try-error"))])
+#urls = unlist(res[sapply(res, function(x) !inherits(x, "try-error"))])
 
-print ("URLs from infile", infile)
-urls
+print (paste0("_valid_ URLs from infile ", infile))
+res
 
 # open browser with ALL urls (can take some time)
-lapply(urls, function(x){system(paste(browserapp, x))})
+lapply(res, function(x){system(paste(browserapp, x))})
 
 #url= tm_filter(tdm, "http")
 
