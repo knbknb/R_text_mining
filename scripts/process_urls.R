@@ -1,6 +1,6 @@
 #!/usr/bin/Rscript
 ###############################################################################
-#
+# TODO: Add command line option to make calls to browserapp(URL) optional/interactive
 #
 # https://github.com/knbknb/R_text_mining/
 #
@@ -69,7 +69,7 @@ if(!file.exists(infile)){
 	print(paste0("Loading '", infile, "' ..."))
 }
 
-# TODO add check 
+# TODO [GH3] add check 
 load(infile, envir=tmpenv)
 corpus <- tmpenv$corpus
 show(corpus)

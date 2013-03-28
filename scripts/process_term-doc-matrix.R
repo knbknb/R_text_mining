@@ -76,7 +76,7 @@ if(!file.exists(infile)){
 	print(paste0("Loading '", infile, "' ..."))
 }
 
-# TODO add check 
+# TODO [GH1] add check 
 load(infile, envir=tmpenv)
 corpus <- tmpenv$corpus
 
