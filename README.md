@@ -19,7 +19,7 @@ Use R to draw interesting conclusions from a subset of the 11000 abstracts submi
 
 
 This project will be presented at [EGU][2], the annual [General Assembly 2013][1], a conference in Vienna to happen in April 2013. 
-There will be a 15 minute talk about text-mining in R, on beginner level.
+There will be a poster about text-mining in R, on beginner level.
 
 For more information about the code, read the [CONFIGURATION_AND_USAGE.md](CONFIGURATION_AND_USAGE.md) file.
 To learn even more, please read the documentation in the ["doc"](doc) directory of this repo for an explanation of  *what* the scripts are doing.
