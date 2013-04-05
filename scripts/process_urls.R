@@ -131,6 +131,8 @@ urls.nohttp = subset(urls1, !grepl("^http:", urls.http, perl=TRUE))
 #u %in% grep("^M", nm, value=TRUE)
 #subset(state.x77, grepl("^M", nm), Illiteracy:Murder)
 #h = getCurlHandle(header = TRUE, netrc = TRUE)
+# TODO save invalid urls into own list, optionally print this list out later. 
+# Some URLs might still be interesting, and worthwhile human inspection.
 urlcheck <- function(x)
 {
 	print(paste0("checking ", x))
