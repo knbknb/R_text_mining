@@ -82,12 +82,17 @@ text_mining_util$sa <- function(corpus, tdmatrix, term, cor){
 	 stemCompletion(n,	corpus)
 }
 
-#find interesting docs in a corpus of EGU abstracts
+# find interesting docs in a corpus of EGU abstracts
+# returns a list of metadata records (2 fields)
+# opens a browser window for each of them
+# TODO make text_mining_util$idocs_egu return a list of documents
 text_mining_util$idocs_egu <- function(corpus, x) { 
 	idocs <- tm_filter(corpus, x)
 	idocspdf <- lapply(idocs, function(x){m <- meta(x, tag="ID"); paste0("http://meetingorganizer.copernicus.org/EGU2013/", m)})
-	lapply(unlist(idocspdf), function(x){system(paste(browserapp, x))})
+	cnt <- lapply(unlist(idocspdf), function(x){system(paste(browserapp, x))})
+	cnt
 }
+
 ########################################
 ## Has to be last in file
 
