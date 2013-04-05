@@ -7,6 +7,7 @@ library("RColorBrewer")
 text_mining_wordcloud = new.env()
 
 
+text_mining_wordcloud$size_muliplier = 4
 
 #create a wordcloud. 
 # input params:
@@ -24,7 +25,7 @@ text_mining_wordcloud$create_wordcloud_png = function(df, fn="wordcloud.png", mi
 	#options(device="png")
 	#dev.new(which=dev.cur())
 	
-	png(fn, width=1280,height=1000,  res=180)
+	png(fn, width=1280 * text_mining_wordcloud$size_muliplier,height=1000 * text_mining_wordcloud$size_muliplier,  res=180 * text_mining_wordcloud$size_muliplier)
 	
 	#dev.new()
 	#dev.list()
@@ -41,6 +42,8 @@ text_mining_wordcloud$create_wordcloud_png = function(df, fn="wordcloud.png", mi
 	
 }
 
+
+
 # create many png files from the most common 10,20,30,40 words in document
 text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, maxwords=Inf, seq=c(10, 20,30,40,50, 100), title="", lettersize=2){
 	
@@ -49,7 +52,7 @@ text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, 
 		fnx = paste0(fn, "-", x1, ".png");
 		titlex = paste0("Most common ", x, " words/phrases of '", title, "'")
 		#titlex = paste0("Top ", x, "% words of ", title)
-		png(fn, width=1280,height=800,  res=130)
+		png(fn, width=1280 * text_mining_wordcloud$size_muliplier, height=800 * text_mining_wordcloud$size_muliplier,  res=130 * text_mining_wordcloud$size_muliplier)
 		maxwx = x
 		minfx = minfreq
 		print(paste0("Maxwords = ", x, "; Creating wordcloud file '", fnx, "'"))
@@ -58,6 +61,7 @@ text_mining_wordcloud$wordclouds_pngs = function(df, fn="wordcloud", minfreq=2, 
 	}
 	
 }
+
 
 # find max font sizes to use in wordcloud creating. 
 # when phrase lengths > 1 word, strings tend to get longer, and do not fit on canvas
