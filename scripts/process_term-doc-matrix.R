@@ -137,4 +137,6 @@ d <- data.frame(word = names(v),freq=v)
 #dev.off()
 #text_mining_wordcloud$wordclouds_pngs(d, seq=c(0.1,0.5,1,2,5), title=infile)
 text_mining_wordcloud$wordclouds_pngs(d, seq=c(10,20,30,40,50), title=basename(infile), fn=paste0(infile, "-", wmin, "-", wmax ,"-"), lettersize=lsz)
+#text_mining_wordcloud$wordclouds_svgs(d, seq=c(10,20,30,40,50), title=basename(infile), fn=paste0(infile, "-", wmin, "-", wmax ,"-"), lettersize=lsz)
+
 warnings()
