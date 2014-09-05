@@ -13,7 +13,8 @@ Use R to draw interesting conclusions from a subset of the 23000 abstracts submi
 to be presented at the [EGU General Assembly 2013][1], Vienna (see below). 
 This is also a big annual conference for Earth scientists, in particular geophysicists and geologists.
 
-Both [AGU][4]  and [EGU][2]  conferences have the same target audience, and they even share the same classification system of scientific subfields.
+Both [AGU][4]  and [EGU][2]  conferences have the same target audience, and they even share a similar classification system of scientific subfields. That means the conference tracks/sessions have the same titles. 
+So the two datasets could be merged.
 
 Use R to draw interesting conclusions from a subset of the 11000 abstracts submitted. (These are also *not* included with this repository.)
 
