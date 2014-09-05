@@ -18,9 +18,8 @@ Both [AGU][4]  and [EGU][2]  conferences have the same target audience, and they
 Use R to draw interesting conclusions from a subset of the 11000 abstracts submitted. (These are also *not* included with this repository.)
 
 
-COMING SOON
-===========
-[Results from this project will be presented][3] at EGU General Assembly 2013, a conference in Vienna to happen in April 2013. 
+
+[Results from this project were presented][3] at EGU General Assembly 2013, a conference in Vienna to happen in April 2013. 
 There will be a poster about text-mining in R, on beginner level.
 
 For more information about the code, read the [CONFIGURATION_AND_USAGE.md](CONFIGURATION_AND_USAGE.md) file.
