@@ -1,6 +1,6 @@
 #### README.md
 
-These are just to samples data files.
+These are just toy samples data files.
 
 Later in the project I have created different, much larger .RData files. 
 I did this  by web-scraping the conference web site.
