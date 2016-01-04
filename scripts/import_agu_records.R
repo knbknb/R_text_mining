@@ -1,18 +1,14 @@
 #!/usr/bin/Rscript
 ###############################################################################
 #
-#
-# https://github.com/knbknb/R_text_mining/
-#
-# $Id: import_agu_records.R 3357 2013-02-14 15:37:13Z knb $
+# $Id$
 # Author: knb
-# Build a corpus from AGU FALL MEETING 2012 abstracts, write it out to an Rdata file
 ###############################################################################
 
 print(getwd())
 
 config="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/scripts/text_mining_config.R"
-source(config) # should be absolute path, 
+source(config) # should be absolute path,
 utils=paste0(text_mining_config$homedir, "scripts/text_mining_utils.R")
 source(utils)
 
@@ -27,42 +23,42 @@ of=text_mining_config$full_outfilename(text_mining_config$outfileprefix, text_mi
 
 #options must be -s single-letter or --longer-string. -dd double letters don't work
 option_list <- list(
-		make_option(c("-i", "--infile"), type="character", 
+		make_option(c("-i", "--infile"), type="character",
 				default="abstracts.csv", dest="infile",
 				help= paste0("Infile, must be a CSV file and end in .csv")),
-		make_option(c("-x", "--override"), 
-				action="store_true", 
+		make_option(c("-x", "--override"),
+				action="store_true",
 				default=FALSE, dest="override",
 				help="Overwrite pre-existing .RData file "),
-		make_option(c("-d", "--outdir"), type="character", 
+		make_option(c("-d", "--outdir"), type="character",
 				default=text_mining_config$outdir2, dest="outdir",
 				help= paste0("Outdir, must be a subdir name such as 'volcanology' ")),
-		make_option(c("-f", "--outfile"), type="character", 
+		make_option(c("-f", "--outfile"), type="character",
 				default=of, dest="outfile",
 				help= paste0("Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)")),
-		make_option(c("-n", "--show_n"), 
+		make_option(c("-n", "--show_n"),
 				type="integer", default=text_mining_config$show_n_default, dest="show_n",
 				help=paste0("Show this many records in full. [default = ", text_mining_config$show_n_default, "]")),
-		make_option(c("-t", "--termdocmatrix"), 
+		make_option(c("-t", "--termdocmatrix"),
 				action="store_true", default=FALSE, dest="termdocmatrix",
 				help="Also generate a term-document-matrix from corpus. [default=FALSE]"),
-		make_option(c("-v", "--verbose"), 
+		make_option(c("-v", "--verbose"),
 				action="store_true", default=FALSE,
 				help="Print (a lot of) extra output [default=false]"),
-		make_option(c("-q", "--quietly"), 
+		make_option(c("-q", "--quietly"),
 				action="store_false", default=TRUE,
 				dest="verbose", help="Print little output"))
 
 parser <- OptionParser(usage = "%prog [options] file", option_list=option_list,
 		add_help_option = TRUE,
 		prog = NULL,
-		description = "", epilogue = paste0("-i Infile must be .csv file with AGU abstracts 
+		description = "", epilogue = paste0("-i Infile must be .csv file with AGU abstracts
    exported from http://agu-fm12.abstractcentral.com.
 -f Filename can be absolute path or relative path.
    If relative path, then infile will be loaded from directory
    '",text_mining_config$full_datadir(), "'.
--t If you specify the '-t' option, a term-document matrix will also be generated from the corpus 
-and saved in  
+-t If you specify the '-t' option, a term-document matrix will also be generated from the corpus
+and saved in
 '", text_mining_config$full_rdatadir(), "'.
 "))
 
@@ -98,7 +94,7 @@ if(!file.exists(infile)){
 	} else {
 		print(paste0("Loading '", infile, "' ..."))
 	}
-	
+
 } else {
 	print(paste0("Loading '", infile, "' ..."))
 }
@@ -113,16 +109,16 @@ bodies= csv[,18] #col 18 is abstract body
 names(csv)
 
 # Column List:
-# [1] "X.Session.or.Event.Title"           "Session.or.Event.Abbreviation"     
-# [3] "Session.or.Event.Type"              "Session.or.Event.Topic"            
-# [5] "Session.or.Event.Date"              "Session.or.Event.Start.Time"       
-# [7] "Session.or.Event.End.Time"          "Session.or.Event.Location"         
-# [9] "Session.or.Event.Details"           "Abstract.or.Placeholder.Title"     
+# [1] "X.Session.or.Event.Title"           "Session.or.Event.Abbreviation"
+# [3] "Session.or.Event.Type"              "Session.or.Event.Topic"
+# [5] "Session.or.Event.Date"              "Session.or.Event.Start.Time"
+# [7] "Session.or.Event.End.Time"          "Session.or.Event.Location"
+# [9] "Session.or.Event.Details"           "Abstract.or.Placeholder.Title"
 #[11] "Abstract.Final.ID"                  "Abstract.or.Placeholder.Start.Time"
-#[13] "Abstract.or.Placeholder.End.Time"   "Abstract.Presenter.Name"           
-#[15] "Abstract.Authors"                   "Institutions.All"                  
-#[17] "Abstract.Status"                    "Abstract.Body"                     
-#[19] "Session.Abstract.Sort.Order"  
+#[13] "Abstract.or.Placeholder.End.Time"   "Abstract.Presenter.Name"
+#[15] "Abstract.Authors"                   "Institutions.All"
+#[17] "Abstract.Status"                    "Abstract.Body"
+#[19] "Session.Abstract.Sort.Order"
 #attributes(csv[[2]])
 head(csv,n=1)
 words = bodies
@@ -145,12 +141,12 @@ corpus <- corpus[grep("\\S+", corpus, invert=FALSE, perl=TRUE)]
 
 
 #preprocessing
-#'arg' should be one of 
-#' “title”, “creator”, “description”, “date”, “identifier”, “language”, “subject”, 
+#'arg' should be one of
+#' “title”, “creator”, “description”, “date”, “identifier”, “language”, “subject”,
 #' “publisher”, “contributor”, “type”, “format”, “source”, “relation”, “coverage”, “rights”
 if (opts$options$verbose == TRUE){
 	show_n = min(length(corpus), max_length)
-} 
+}
 print("")
 tm::inspect(head(corpus, n=show_n))
 print("Generating Metadata Records...")
@@ -169,7 +165,7 @@ corpus = tm_map(corpus, function(x){
 	DublinCore(x, "Publisher" ) = csv[[i,16]]   #institutions
 	DublinCore(x, "contributor" ) =  gsub('[[:space:]]+'," ", text_mining_util$cleanup(csv[[i,15]], ";") , perl=TRUE) ;  #all authors
 	x
-})	
+})
 
 print("")
 print("Finished with generating Metadata records:")
@@ -198,9 +194,9 @@ show(corpus)
 print("Printing a few sample documents")
 tm::inspect(head(corpus, n=show_n))
 
-# create a dirsource with text documents. this is optional. 
-# it allows for checking intermediate results. 
-# Just open small text file that remains from each document. 
+# create a dirsource with text documents. this is optional.
+# it allows for checking intermediate results.
+# Just open small text file that remains from each document.
 fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
 fn = text_mining_util$trim(fn)
 system(paste0("mkdir -p ", text_mining_config$full_outdir_corpusfiles()))
@@ -222,15 +218,15 @@ if(gentdm == TRUE){
 	print(paste0(text_mining_config$full_tdmfile(outfile)))
 	save.image(file=text_mining_config$full_tdmfile(outfile))
 	print(paste0("... done with saving Term-Document-Matrix to file."))
-	
+
 }
 
 print(paste0("(Optional) You can also create a ***customized*** Term-Document-Matrix by executing "))
 print(paste0(procscript, " --infile ", text_mining_config$full_rdatafile(outfile)))
 
 
-#remove local .RData file in case the script was called with Rscript --save. 
-# We just  have saved away everything, no need to save it again in the working dir. 
+#remove local .RData file in case the script was called with Rscript --save.
+# We just  have saved away everything, no need to save it again in the working dir.
 tryCatch(
 		unlink(".RData"),
 		error=function(e) {

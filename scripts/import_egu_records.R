@@ -12,9 +12,9 @@
 print(getwd())
 
 config="/home/knb/code/svn/eclipse38_dynlang/R_one-offs/R_text_mining/scripts/text_mining_config.R"
-source(config) # should be absolute path, 
-utils=paste0(text_mining_config$homedir, "scripts/text_mining_utils.R")
-source(utils)
+source(config) # should be absolute path,
+myutils=paste0(text_mining_config$homedir, "scripts/text_mining_utils.R")
+source(myutils)
 
 
 library("RWeka")  # stemming and tokenization, called by tm
@@ -27,42 +27,42 @@ of=text_mining_config$full_outfilename(text_mining_config$outfileprefix, text_mi
 
 #options must be -s single-letter or --longer-string. -dd double letters don't work
 option_list <- list(
-		make_option(c("-i", "--indir"), type="character", 
-				default="abstracts.csv", dest="indir",
+		make_option(c("-i", "--indir"), type="character",
+				default=".", dest="indir",
 				help= paste0("Directory Containing Infiles, must be PDF files exported from meetingorganiser.egu.org")),
-		make_option(c("-x", "--override"), 
-				action="store_true", 
+		make_option(c("-x", "--override"),
+				action="store_true",
 				default=FALSE, dest="override",
 				help="Overwrite pre-existing .RData file "),
-		make_option(c("-d", "--outdir"), type="character", 
+		make_option(c("-d", "--outdir"), type="character",
 				default=text_mining_config$outdir2, dest="outdir",
 				help= paste0("Outdir, must be a subdir name such as 'volcanology' ")),
-		make_option(c("-f", "--outfile"), type="character", 
+		make_option(c("-f", "--outfile"), type="character",
 				default=of, dest="outfile",
 				help= paste0("Outfile, should be a simple filename fragment such as 'volcanology' (.Rdata will be appended)")),
-		make_option(c("-n", "--show_n"), 
+		make_option(c("-n", "--show_n"),
 				type="integer", default=text_mining_config$show_n_default, dest="show_n",
 				help=paste0("Show this many records in full. [default = ", text_mining_config$show_n_default, "]")),
-		make_option(c("-t", "--termdocmatrix"), 
+		make_option(c("-t", "--termdocmatrix"),
 				action="store_true", default=FALSE, dest="termdocmatrix",
 				help="Also generate a term-document-matrix from corpus. [default=FALSE]"),
-		make_option(c("-v", "--verbose"), 
+		make_option(c("-v", "--verbose"),
 				action="store_true", default=FALSE,
 				help="Print (a lot of) extra output [default=false]"),
-		make_option(c("-q", "--quietly"), 
+		make_option(c("-q", "--quietly"),
 				action="store_false", default=TRUE,
 				dest="verbose", help="Print little output"))
 
 parser <- OptionParser(usage = "%prog [options] file", option_list=option_list,
 		add_help_option = TRUE,
 		prog = NULL,
-		description = "", epilogue = paste0("-i Infile must be .csv file with AGU abstracts 
-   exported from http://meetingorganizer.copernicus.org/EGU2013/.
+		description = "", epilogue = paste0("-i Infile must be dirname, default '.',
+   filled with pdf-Files exported from http://meetingorganizer.copernicus.org/EGU2013/.
 -f Filename can be absolute path or relative path.
    If relative path, then infile will be loaded from directory
    '",text_mining_config$full_datadir(), "'.
--t If you specify the '-t' option, a term-document matrix will also be generated from the corpus 
-and saved in  
+-t If you specify the '-t' option, a term-document matrix will also be generated from the corpus
+and saved in
 '", text_mining_config$full_rdatadir(), "'.
 "))
 
@@ -105,7 +105,7 @@ if(!file.exists(indir)){
 	} else {
 		print(paste0("Loading all pdfs from '", indir, "' ..."))
 	}
-	
+
 } else {
 	print(paste0("Loading all pdfs from '", indir, "' ..."))
 }
@@ -115,31 +115,34 @@ Description = "Description", Title = "Title" #, DateTimeStamp = "DateTimeStamp"
 myReader = readTabular(mapping = mapping)
 #library("wordnet") # dictionaries
 doit <- function(x){
-#pdfs_parsed= lapply(pdfs, function(x) {
-p = file.path(indir, x)
-pdfv = readPDF(PdftotextOptions = "-layout")(elem = list(uri = p),language = "en",id=x)
-#exclude elements 1:7 - standard EGU copyright header
-pdfv[-7:-1]
+        #pdfs_parsed= lapply(pdfs, function(x) {
+        p = file.path(indir, x)
+        pdfv = readPDF()(elem = list(uri = p),language = "en",id=x)
+        #print(pdfv[-10:-1])
 
-end_of_header = min(which(pdfv == "")) - 1
-#will contain title and authors
-attr(pdfv, "Description") = paste(pdfv[1:end_of_header], collapse=" ")
-#str(pdfv)
-# exclude author information
-data.frame(Contents = paste(pdfv[(-1 * end_of_header):-1], collapse=" "),
-		Title =  ifelse(is.character(attr(pdfv, "Title")), attr(pdfv, "Title"), "?"),
-		Author = ifelse(is.character(attr(pdfv, "Author")), attr(pdfv, "Author"), "?"),
-		#DateTimeStamp = ifelse(is.character(attr(pdfv, "DateTimeStamp")), attr(pdfv, "DateTimeStamp"),  as.POSIXlt("1919-01-01 01:00") ),
-		#DateTimeStamp = attr(pdfv, "DateTimeStamp"),
-		Description = attr(pdfv, "Description"),
-		Heading  = ifelse(is.character(attr(pdfv, "Heading")), attr(pdfv, "Heading"), "?"),
-		ID  = ifelse(is.character(attr(pdfv, "ID")), attr(pdfv, "ID"), "?"),
-		Language  = ifelse(is.character(attr(pdfv, "Language")), attr(pdfv, "Language"), "?"),
-		# Language =  attr(pdfv, "Language"),
-		# LocalMetaData = attr(pdfv, "LocalMetaData"),
-		Origin= attr(pdfv, "Origin"),
-		stringsAsFactors=FALSE)
-		
+        #exclude elements 1:9 - standard EGU copyright header, and title,author information.
+        # institute/affiliation names create some bias
+        pdfv[-9:-1]
+
+        end_of_header = min(which(pdfv == "")) - 1
+        #will contain title and authors
+        attr(pdfv, "Description") = paste(pdfv[1:end_of_header], collapse=" ")
+        #str(pdfv)
+        # exclude author information
+        data.frame(Contents = paste(pdfv[(-1 * end_of_header):-1], collapse=" "),
+        	Title =  ifelse(is.character(attr(pdfv, "Title")), attr(pdfv, "Title"), "?"),
+        	Author = ifelse(is.character(attr(pdfv, "Author")), attr(pdfv, "Author"), "?"),
+        	#DateTimeStamp = ifelse(is.character(attr(pdfv, "DateTimeStamp")), attr(pdfv, "DateTimeStamp"),  as.POSIXlt("1919-01-01 01:00") ),
+        	#DateTimeStamp = attr(pdfv, "DateTimeStamp"),
+        	Description = attr(pdfv, "Description"),
+        	Heading  = ifelse(is.character(attr(pdfv, "Heading")), attr(pdfv, "Heading"), "?"),
+        	ID  = ifelse(is.character(attr(pdfv, "ID")), attr(pdfv, "ID"), "?"),
+        	Language  = ifelse(is.character(attr(pdfv, "Language")), attr(pdfv, "Language"), "?"),
+        	# Language =  attr(pdfv, "Language"),
+        	# LocalMetaData = attr(pdfv, "LocalMetaData"),
+        	Origin= attr(pdfv, "Origin"),
+        	stringsAsFactors=FALSE)
+
 }
 pdfs_parsed= lapply(pdfs, function(i) {try(doit(i), FALSE)})
 #str(pdfs_parsed[[1]])
@@ -159,7 +162,7 @@ meta(corpus, type="corpus", "rdata") = text_mining_config$full_rdatafile(outfile
 
 if (opts$options$verbose == TRUE){
 	show_n = min(length(corpus), max_length)
-} 
+}
 print("")
 tm::inspect(head(corpus, n=show_n))
 
@@ -170,12 +173,12 @@ corpus <- corpus[grep("\\S+", corpus, invert=FALSE, perl=TRUE)]
 
 
 #preprocessing
-#'arg' should be one of 
-#' “title”, “creator”, “description”, “date”, “identifier”, “language”, “subject”, 
+#'arg' should be one of
+#' “title”, “creator”, “description”, “date”, “identifier”, “language”, “subject”,
 #' “publisher”, “contributor”, “type”, “format”, “source”, “relation”, “coverage”, “rights”
 if (opts$options$verbose == TRUE){
 	show_n = min(length(corpus), max_length)
-} 
+}
 print("")
 tm::inspect(head(corpus, n=show_n))
 print("Generating Metadata Records...")
@@ -183,9 +186,9 @@ len=length(corpus)
 
 tm::inspect(head(corpus, n=show_n))
 meta(corpus[[show_n]])
-corpus <- tm_map(corpus, tolower)
+corpus.copy <- corpus <- tm_map(corpus, tolower)
 
-
+corpus <- tm_map(corpus, removePunctuation, preserve_intra_word_dashes = TRUE)
 print("Removing stopwords...")
 corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
 tm::inspect(head(corpus, n=show_n))
@@ -193,7 +196,8 @@ tm::inspect(head(corpus, n=show_n))
 print("Stemming... (and removing stopwords, 2nd pass)")
 corpus <- tm_map(corpus, function(x){stemDocument(x, language = "english")} )
 corpus <- tm_map(corpus, function(x){ removeWords(x, c(stopwords(), text_mining_util$earthsci_stopwords)) })
-
+#print("Stem completion... can take a while)")
+#corpus <- tm_map(corpus, stemCompletion, dictionary=corpus.copy, type="first")
 #corpus <- tm_map(corpus, function(x){ text_mining_util$cleanup(x)})
 
 show(corpus)
@@ -202,9 +206,9 @@ show(corpus)
 print("Printing a few sample documents")
 tm::inspect(head(corpus, n=show_n))
 
-# create a dirsource with text documents. this is optional. 
-# it allows for checking intermediate results. 
-# Just open small text file that remains from each document. 
+# create a dirsource with text documents. this is optional.
+# it allows for checking intermediate results.
+# Just open small text file that remains from each document.
 fn =paste(sprintf("%05d",seq_along(corpus)), ".txt", sep = "")
 fn = text_mining_util$trim(fn)
 system(paste0("mkdir -p ", text_mining_config$full_outdir_corpusfiles()))
@@ -226,15 +230,15 @@ if(gentdm == TRUE){
 	print(paste0(text_mining_config$full_tdmfile(outfile)))
 	save.image(file=text_mining_config$full_tdmfile(outfile))
 	print(paste0("... done with saving Term-Document-Matrix to file."))
-	
+
 }
 
 print(paste0("(Optional) You can also create a ***customized*** Term-Document-Matrix by executing "))
 print(paste0(procscript, " --infile ", text_mining_config$full_rdatafile(outfile)))
 
 
-#remove local .RData file in case the script was called with Rscript --save. 
-# We just  have saved away everything, no need to save it again in the working dir. 
+#remove local .RData file in case the script was called with Rscript --save.
+# We just  have saved away everything, no need to save it again in the working dir.
 tryCatch(
 		unlink(".RData"),
 		error=function(e) {

@@ -117,11 +117,51 @@ if(!file.exists(infile)){
 #load(infile)
 
 load(infile, envir=tmpenv)
-corpus <- tmpenv$corpus
+#corpus <- tmpenv$corpus
 
-show(corpus)
-infile = basename(infile)
-algo
+library(filehashSQLite)
+#filehashFormats()
+getwd()
+
+s <- "sqldb_pcorpus_seism" # this string becomes filename, must not contain dots. Example: "mydata.sqlite" is not permitted.
+
+suppressMessages(library(filehashSQLite))
+
+if(! file.exists(s)){
+
+        pc = PCorpus(DataframeSource(csv), readerControl = list(language = "en"), dbControl = list(dbName = s, dbType = "SQLite"))
+        dbCreate(s, "SQLite")
+        db <- dbInit(s, "SQLite")
+        set.seed(234)
+        dbInsert(db, "test", "hi there")
+} else {
+        db <- dbInit(s, "SQLite")
+        pc <- dbLoad(db)
+}
+csv[1:3]
+colnames(csv)
+show(pc)
+dbFetch(db, "test")
+# remove it
+rm(db)
+rm(pc)
+
+#reload it
+db <- dbInit(s, "SQLite")
+pc <- dbLoad(db)
+
+# the corpus entries are now accessible, but not loaded into memory.
+# now 900 documents are bound via "Active Bindings", created by makeActiveBinding() from the base package
+show(pc)
+dbFetch(db, "900")
+# <<PlainTextDocument>>
+#         Metadata:  7
+# Content:  chars: 33
+
+dbFetch(db, "test")
+#dbFetch(db, "test")
+#[1] "hi there"
+
 inspect(corpus)
 # do not use when stopwords are removed?
 if (algo == "bigram") {
