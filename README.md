@@ -1,7 +1,12 @@
 R_text_mining
 =============
 
-**R project; Work in progress**
+#### tl;dr: For a visualization see https://rapps.shinyapps.io/wordcloud01/
+
+Please wait 1-2 minutes for the app to startup, and load the corpora. 
+
+
+#### R project from 2013, abandoned
 
  (Part 1) Perform *text-mining* on  abstracts of science contributions, 
 presented at the [AGU Fall Meeting 2012][0], San Francisco. 
