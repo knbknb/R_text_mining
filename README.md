@@ -5,6 +5,7 @@ R_text_mining
 
 Please wait 1-2 minutes for the app to startup, and load the corpora. 
 
+This repo contains the preprocessing-scripts for the above-mentioned Shiny-App (whose code is hosted in an [extra repository](https://github.com/knbknb/wordcloud-01) here on Github) 
 
 #### R project from 2013, abandoned
 
